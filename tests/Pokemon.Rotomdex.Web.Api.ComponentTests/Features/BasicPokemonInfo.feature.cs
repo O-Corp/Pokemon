@@ -109,6 +109,9 @@ namespace Pokemon.Rotomdex.Web.Api.ComponentTests.Features
 #line 7
         testRunner.Then("an OK response is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
+#line 8
+        testRunner.And("a request is made to the Pokemon API", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
                 TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                             "Name",
                             "Description Standard",
@@ -119,7 +122,7 @@ namespace Pokemon.Rotomdex.Web.Api.ComponentTests.Features
                             "It was created by a scientist.",
                             "Rare",
                             "true"});
-#line 8
+#line 9
         testRunner.And("the response is", ((string)(null)), table1, "And ");
 #line hidden
             }

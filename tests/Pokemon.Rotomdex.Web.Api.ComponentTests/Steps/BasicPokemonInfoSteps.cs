@@ -3,7 +3,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Moq;
 using NUnit.Framework;
+using Pokemon.Rotomdex.Web.Api.Adapters;
 using Pokemon.Rotomdex.Web.Api.Models;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -15,7 +17,14 @@ namespace Pokemon.Rotomdex.Web.Api.ComponentTests.Steps
     {
         private string _pokemonName;
         private HttpResponseMessage _httpResponse;
+        private Mock<IPokemonApiAdapter> _pokemonApiAdapter;
 
+        [Before]
+        public void Setup()
+        {
+            _pokemonApiAdapter = new Mock<IPokemonApiAdapter>();
+        }
+        
         [Given(@"a valid request to retrieve information about (.*)")]
         public void GivenAValidRequestToRetrieveInformationAbout(string name)
         {
@@ -35,6 +44,12 @@ namespace Pokemon.Rotomdex.Web.Api.ComponentTests.Steps
         public void ThenAnResponseIsReturned(HttpStatusCode httpStatusCode)
         {
             Assert.That(_httpResponse.StatusCode, Is.EqualTo(httpStatusCode));
+        }
+
+        [Then(@"a request is made to the Pokemon API")]
+        public void ThenARequestIsMadeToThePokemonApi()
+        {
+            _pokemonApiAdapter.Verify(x => x.GetPokemonDetails(_pokemonName), Times.Once);
         }
 
         [Then(@"the response is")]
