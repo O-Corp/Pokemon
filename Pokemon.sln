@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon.Rotomdex.Web.Api", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon.Rotomdex.Web.Api.UnitTests", "tests\Pokemon.Rotomdex.Web.Api.UnitTests\Pokemon.Rotomdex.Web.Api.UnitTests.csproj", "{80472C68-D86E-4FE5-99FE-7662F84A22FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon.Rotomdex.Web.Api.ComponentTests", "tests\Pokemon.Rotomdex.Web.Api.ComponentTests\Pokemon.Rotomdex.Web.Api.ComponentTests.csproj", "{D20E0FA3-19A3-4E28-87D6-82CA2C084879}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon.Rotomdex.Web.Api.ComponentTests", "tests\Pokemon.Rotomdex.Web.Api.ComponentTests\Pokemon.Rotomdex.Web.Api.ComponentTests.csproj", "{B0B3F94C-E6AB-4BDB-A08F-22A65302CEBD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,7 +18,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B4106B30-0479-498D-9FEF-C4C65752EB06} = {C3E5657F-9E85-48B0-8D85-E4F853087BA8}
 		{80472C68-D86E-4FE5-99FE-7662F84A22FD} = {593C3D98-C5EE-453F-8C83-AEF928C253E4}
-		{D20E0FA3-19A3-4E28-87D6-82CA2C084879} = {593C3D98-C5EE-453F-8C83-AEF928C253E4}
+		{B0B3F94C-E6AB-4BDB-A08F-22A65302CEBD} = {593C3D98-C5EE-453F-8C83-AEF928C253E4}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B4106B30-0479-498D-9FEF-C4C65752EB06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -29,9 +29,9 @@ Global
 		{80472C68-D86E-4FE5-99FE-7662F84A22FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80472C68-D86E-4FE5-99FE-7662F84A22FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80472C68-D86E-4FE5-99FE-7662F84A22FD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D20E0FA3-19A3-4E28-87D6-82CA2C084879}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D20E0FA3-19A3-4E28-87D6-82CA2C084879}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D20E0FA3-19A3-4E28-87D6-82CA2C084879}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D20E0FA3-19A3-4E28-87D6-82CA2C084879}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0B3F94C-E6AB-4BDB-A08F-22A65302CEBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0B3F94C-E6AB-4BDB-A08F-22A65302CEBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0B3F94C-E6AB-4BDB-A08F-22A65302CEBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0B3F94C-E6AB-4BDB-A08F-22A65302CEBD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
