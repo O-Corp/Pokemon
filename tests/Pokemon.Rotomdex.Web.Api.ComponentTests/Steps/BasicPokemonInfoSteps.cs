@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using NUnit.Framework;
+using Pokemon.Rotomdex.Web.Api.Models;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 
 namespace Pokemon.Rotomdex.Web.Api.ComponentTests.Steps
 {
@@ -34,8 +36,20 @@ namespace Pokemon.Rotomdex.Web.Api.ComponentTests.Steps
         {
             Assert.That(_httpResponse.StatusCode, Is.EqualTo(httpStatusCode));
         }
+
+        [Then(@"the response is")]
+        public async Task ThenTheResponseIs(Table table)
+        {
+            var expected = table.CreateInstance<PokemonDetails>();
+            var result = await _httpResponse.Content.ReadAsAsync<PokemonDetails>();
+            
+            Assert.That(result.Habitat, Is.EqualTo(expected.Habitat));
+            Assert.That(result.Name, Is.EqualTo(expected.Name));
+            Assert.That(result.DescriptionStandard, Is.EqualTo(expected.DescriptionStandard));
+            Assert.That(result.IsLegendary, Is.EqualTo(expected.IsLegendary));
+        }
     }
-    
+
     internal static class TestHelper
     {
         public static HttpClient CreateHttpClient()
