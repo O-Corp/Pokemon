@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Pokemon.Rotomdex.Web.Api.Models;
 
 namespace Pokemon.Rotomdex.Web.Api.Controllers
 {
@@ -9,7 +10,15 @@ namespace Pokemon.Rotomdex.Web.Api.Controllers
         [Route("{name}")]
         public IActionResult Get([FromRoute] string name)
         {
-            return Ok();
+            var response = new PokemonDetails
+            {
+                Habitat = "Rare",
+                Name = "Mewtwo",
+                DescriptionStandard = "It was created by a scientist.",
+                IsLegendary = true
+            };
+            
+            return new OkObjectResult(response);
         }
     }
 }

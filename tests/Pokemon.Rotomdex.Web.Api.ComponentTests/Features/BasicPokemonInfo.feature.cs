@@ -113,7 +113,7 @@ namespace Pokemon.Rotomdex.Web.Api.ComponentTests.Features
                             "Name",
                             "Description Standard",
                             "Habitat",
-                            "Legendary"});
+                            "Is Legendary"});
                 table1.AddRow(new string[] {
                             "Mewtwo",
                             "It was created by a scientist.",

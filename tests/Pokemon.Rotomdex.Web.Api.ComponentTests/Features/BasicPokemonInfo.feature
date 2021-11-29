@@ -6,5 +6,5 @@ Return basic standard information about a Pokemon
         When the request is sent
         Then an OK response is returned
         And the response is
-          | Name   | Description Standard          | Habitat | Legendary |
-          | Mewtwo | It was created by a scientist. | Rare    | true      |
+          | Name   | Description Standard           | Habitat | Is Legendary |
+          | Mewtwo | It was created by a scientist. | Rare    | true         |
