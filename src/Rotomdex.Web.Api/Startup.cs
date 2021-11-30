@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Net.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Rotomdex.Domain.Adapters;
 using Rotomdex.Integration.Adapters;
 using Rotomdex.Web.Api.Configuration;
+using Rotomdex.Web.Api.Middleware;
 
 namespace Rotomdex.Web.Api
 {
@@ -29,6 +31,7 @@ namespace Rotomdex.Web.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseMiddleware<ServiceUnavailableMiddleware>();
             app.UseRouting();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
