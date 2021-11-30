@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using Rotomdex.Domain.Adapters;
+using Rotomdex.Domain.Models;
 using Rotomdex.Web.Api.Models;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -32,9 +33,10 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         public void GivenAValidRequestToRetrieveInformationAbout(string name)
         {
             _pokemonName = name;
+            var pokemon = new Pokemon(_pokemonName, "It was created by a scientist.", "rare", true);
             _pokemonApiAdapter
                 .Setup(x => x.GetPokemon(name))
-                .ReturnsAsync(new global::Rotomdex.Domain.Models.Pokemon(_pokemonName, "description", "rare", true));
+                .ReturnsAsync(pokemon);
         }
 
         [When(@"the request is sent")]

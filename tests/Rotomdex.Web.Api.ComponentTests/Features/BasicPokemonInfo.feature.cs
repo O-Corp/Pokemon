@@ -118,9 +118,9 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
                             "Habitat",
                             "Is Legendary"});
                 table1.AddRow(new string[] {
-                            "Mewtwo",
+                            "mewtwo",
                             "It was created by a scientist.",
-                            "Rare",
+                            "rare",
                             "true"});
 #line 9
         testRunner.And("the response is", ((string)(null)), table1, "And ");

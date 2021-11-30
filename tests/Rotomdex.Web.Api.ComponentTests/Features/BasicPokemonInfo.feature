@@ -8,4 +8,4 @@ Return basic standard information about a Pokemon
         And a request is made to the Pokemon API
         And the response is
           | Name   | Description Standard           | Habitat | Is Legendary |
-          | Mewtwo | It was created by a scientist. | Rare    | true         |
+          | mewtwo | It was created by a scientist. | rare    | true         |
