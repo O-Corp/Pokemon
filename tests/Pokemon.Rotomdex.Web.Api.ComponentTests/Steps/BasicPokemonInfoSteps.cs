@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using Pokemon.Rotomdex.Web.Api.Adapters;
+using Pokemon.Rotomdex.Web.Api.Adapters.Contracts;
 using Pokemon.Rotomdex.Web.Api.Models;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
