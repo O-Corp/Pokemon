@@ -3,9 +3,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
-using Pokemon.Rotomdex.Domain.Adapters;
-using Pokemon.Rotomdex.Domain.Models;
-using Pokemon.Rotomdex.Web.Api.Models;
+using Rotomdex.Domain.Adapters;
+using Rotomdex.Domain.Models;
+using Rotomdex.Web.Api.Models;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 

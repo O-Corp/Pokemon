@@ -22,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Pokemon.Rotomdex.Web.Api\Pokemon.Rotomdex.Web.Api.csproj" />
+      <ProjectReference Include="..\..\src\Rotomdex.Web.Api\Rotomdex.Web.Api.csproj" />
     </ItemGroup>
 
 </Project>

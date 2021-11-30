@@ -1,5 +1,5 @@
 ﻿using Moq;
-using Pokemon.Rotomdex.Domain.Adapters;
+using Rotomdex.Domain.Adapters;
 
 namespace Pokemon.Rotomdex.Web.Api.ComponentTests
 {

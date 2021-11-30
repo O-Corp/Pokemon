@@ -4,17 +4,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C3E5657F-9E8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{593C3D98-C5EE-453F-8C83-AEF928C253E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon.Rotomdex.Web.Api", "src\Pokemon.Rotomdex.Web.Api\Pokemon.Rotomdex.Web.Api.csproj", "{B4106B30-0479-498D-9FEF-C4C65752EB06}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rotomdex.Web.Api", "src\Rotomdex.Web.Api\Rotomdex.Web.Api.csproj", "{B4106B30-0479-498D-9FEF-C4C65752EB06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon.Rotomdex.Web.Api.UnitTests", "tests\Pokemon.Rotomdex.Web.Api.UnitTests\Pokemon.Rotomdex.Web.Api.UnitTests.csproj", "{80472C68-D86E-4FE5-99FE-7662F84A22FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rotomdex.Web.Api.UnitTests", "tests\Rotomdex.Web.Api.UnitTests\Rotomdex.Web.Api.UnitTests.csproj", "{80472C68-D86E-4FE5-99FE-7662F84A22FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon.Rotomdex.Web.Api.ComponentTests", "tests\Pokemon.Rotomdex.Web.Api.ComponentTests\Pokemon.Rotomdex.Web.Api.ComponentTests.csproj", "{B0B3F94C-E6AB-4BDB-A08F-22A65302CEBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon.Rotomdex.IntegrationTests", "tests\Pokemon.Rotomdex.IntegrationTests\Pokemon.Rotomdex.IntegrationTests.csproj", "{511A0CA1-5EA9-4A19-8456-870640959C98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rotomdex.IntegrationTests", "tests\Rotomdex.IntegrationTests\Rotomdex.IntegrationTests.csproj", "{511A0CA1-5EA9-4A19-8456-870640959C98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon.Rotomdex.Integration", "src\Pokemon.Rotomdex.Integration\Pokemon.Rotomdex.Integration.csproj", "{04B0EBF3-FE83-4A3A-A6A4-6892E81755B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rotomdex.Integration", "src\Rotomdex.Integration\Rotomdex.Integration.csproj", "{04B0EBF3-FE83-4A3A-A6A4-6892E81755B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon.Rotomdex.Domain", "src\Pokemon.Rotomdex.Domain\Pokemon.Rotomdex.Domain.csproj", "{9A773F26-0477-4358-9588-902003F44FAB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rotomdex.Domain", "src\Rotomdex.Domain\Rotomdex.Domain.csproj", "{9A773F26-0477-4358-9588-902003F44FAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
