@@ -39,6 +39,15 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
                 .ReturnsAsync(pokemon);
         }
 
+        [Given(@"an invalid pokemon")]
+        public void GivenAnInvalidPokemon()
+        {
+            _pokemonName = "xxx";
+            _pokemonApiAdapter
+                .Setup(x => x.GetPokemon(_pokemonName))
+                .ReturnsAsync((Pokemon)null);
+        }
+
         [When(@"the request is sent")]
         public async Task WhenTheRequestIsSent()
         {
