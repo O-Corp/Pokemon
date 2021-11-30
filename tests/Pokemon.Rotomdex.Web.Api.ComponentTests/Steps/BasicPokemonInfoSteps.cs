@@ -1,8 +1,7 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
 using Moq;
 using NUnit.Framework;
 using Pokemon.Rotomdex.Web.Api.Adapters;
@@ -17,24 +16,40 @@ namespace Pokemon.Rotomdex.Web.Api.ComponentTests.Steps
     {
         private string _pokemonName;
         private HttpResponseMessage _httpResponse;
+        private DataContainer _dataContainer;
         private Mock<IPokemonApiAdapter> _pokemonApiAdapter;
 
         [Before]
         public void Setup()
         {
             _pokemonApiAdapter = new Mock<IPokemonApiAdapter>();
+            _dataContainer = new DataContainer
+            {
+                ApiAdapter = _pokemonApiAdapter.Object
+            };
         }
         
         [Given(@"a valid request to retrieve information about (.*)")]
         public void GivenAValidRequestToRetrieveInformationAbout(string name)
         {
             _pokemonName = name;
+            _pokemonApiAdapter
+                .Setup(x => x.GetPokemon(name))
+                .ReturnsAsync(new PokeApiResponse
+                {
+                    Id = 123,
+                    Name = _pokemonName,
+                    Species = new Species
+                    {
+                        Url = new Uri("http://somewhere.com/foo/bar")
+                    }
+                });
         }
 
         [When(@"the request is sent")]
         public async Task WhenTheRequestIsSent()
         {
-            using (var client = TestHelper.CreateHttpClient())
+            using (var client = TestHelper.CreateHttpClient(_dataContainer))
             {
                 _httpResponse = await client.GetAsync($"http://localhost/rotomdex/v1/pokemon/{_pokemonName}");
             }
@@ -49,7 +64,7 @@ namespace Pokemon.Rotomdex.Web.Api.ComponentTests.Steps
         [Then(@"a request is made to the Pokemon API")]
         public void ThenARequestIsMadeToThePokemonApi()
         {
-            _pokemonApiAdapter.Verify(x => x.GetPokemonDetails(_pokemonName), Times.Once);
+            _pokemonApiAdapter.Verify(x => x.GetPokemon(_pokemonName), Times.Once);
         }
 
         [Then(@"the response is")]
@@ -62,18 +77,6 @@ namespace Pokemon.Rotomdex.Web.Api.ComponentTests.Steps
             Assert.That(result.Name, Is.EqualTo(expected.Name));
             Assert.That(result.DescriptionStandard, Is.EqualTo(expected.DescriptionStandard));
             Assert.That(result.IsLegendary, Is.EqualTo(expected.IsLegendary));
-        }
-    }
-
-    internal static class TestHelper
-    {
-        public static HttpClient CreateHttpClient()
-        {
-            var hostBuilder = new WebHostBuilder()
-                .UseStartup<Startup>(); // TODO: using real Startup, switch this out later
-
-            var server = new TestServer(hostBuilder);
-            return server.CreateClient();
         }
     }
 }
