@@ -19,13 +19,13 @@ namespace Rotomdex.Web.Api.Controllers
         [Route("{name}")]
         public async Task<IActionResult> Get([FromRoute] string name)
         {
-            await _pokemonApiAdapter.GetPokemon(name);
+            var pokemon = await _pokemonApiAdapter.GetPokemon(name);
             var response = new PokemonDetails
             {
-                Habitat = "Rare",
-                Name = "Mewtwo",
-                DescriptionStandard = "It was created by a scientist.",
-                IsLegendary = true
+                Habitat = pokemon.Habitat,
+                Name = pokemon.Name,
+                DescriptionStandard = pokemon.Description,
+                IsLegendary = pokemon.IsLegendary
             };
             
             return new OkObjectResult(response);

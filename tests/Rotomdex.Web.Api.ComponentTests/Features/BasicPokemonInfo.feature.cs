@@ -101,7 +101,7 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
             {
                 this.ScenarioStart();
 #line 5
-        testRunner.Given("a valid request to retrieve information about Mewtwo", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+        testRunner.Given("a valid request to retrieve information about mewtwo", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 6
         testRunner.When("the request is sent", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
