@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Rotomdex.Domain.Exceptions;
 using Rotomdex.Integration.Adapters;
 
 namespace Rotomdex.Integration.UnitTests.Adapters
@@ -59,6 +60,13 @@ namespace Rotomdex.Integration.UnitTests.Adapters
             var result = await _subject.GetPokemon(nonExistentPokemon);
 
             Assert.That(result, Is.Null);
+        }
+
+        [Test]
+        public void When_A_Transient_Error_Occurs_Then_Correct_Exception_Is_Thrown()
+        {
+            _subject = new PokeApiAdapter(new HttpClient(new ErrorHttpHandler()), new Uri("http://foo.com/"));
+            Assert.ThrowsAsync<ThirdPartyUnavailableException>(async () => await _subject.GetPokemon("dragonite"));
         }
     }
 }

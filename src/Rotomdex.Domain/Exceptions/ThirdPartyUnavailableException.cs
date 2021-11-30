@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Rotomdex.Web.Api.Exceptions
+namespace Rotomdex.Domain.Exceptions
 {
     public class ThirdPartyUnavailableException : Exception
     {

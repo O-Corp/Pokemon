@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Polly;
+using Polly.Retry;
 using Rotomdex.Domain.Adapters;
+using Rotomdex.Domain.Exceptions;
 using Rotomdex.Domain.Models;
 using Rotomdex.Integration.Contracts;
 
@@ -20,25 +25,62 @@ namespace Rotomdex.Integration.Adapters
 
         public async Task<Pokemon> GetPokemon(string name)
         {
-            var httpResponse = await _httpClient.GetAsync($"api/v2/pokemon/{name.ToLower()}");
+            try
+            {
+                var apiResponse = await GetPokemonDetails(name);
+                if (apiResponse != null)
+                {
+                    apiResponse.SpeciesDetails = await GetSpeciesDetails(apiResponse.Id);
+                    
+                    return new Pokemon(
+                        apiResponse.Name,
+                        apiResponse.SpeciesDetails.FlavorTextEntries[0].FlavourText,
+                        apiResponse.SpeciesDetails.Habitat.Name,
+                        apiResponse.SpeciesDetails.IsLegendary);
+                }
+
+                return null;
+            }
+            catch (Exception e)
+            {
+                throw new ThirdPartyUnavailableException("PokeApi", e);
+            }
+        }
+
+        private static AsyncRetryPolicy<HttpResponseMessage> GetRetryPolicy()
+        {
+            var transientStatusCodes = new[]
+            {
+                HttpStatusCode.InternalServerError,
+                HttpStatusCode.GatewayTimeout
+            };
+
+            return Policy
+                .Handle<HttpRequestException>()
+                .Or<TaskCanceledException>()
+                .OrResult<HttpResponseMessage>(r => transientStatusCodes.Contains(r.StatusCode))
+                .WaitAndRetryAsync(new[]
+                {
+                    TimeSpan.FromSeconds(1),
+                    TimeSpan.FromSeconds(2),
+                    TimeSpan.FromSeconds(3)
+                });
+        }
+
+        private async Task<PokeApiResponse> GetPokemonDetails(string name)
+        {
+            var httpResponse = await GetRetryPolicy().ExecuteAsync(async () => await _httpClient.GetAsync($"api/v2/pokemon/{name.ToLower()}"));
             if (!httpResponse.IsSuccessStatusCode)
             {
                 return null;
             }
             
-            var response = await httpResponse.Content.ReadFromJsonAsync<PokeApiResponse>();
-            response.SpeciesDetails = await GetSpeciesDetails(response.Id);
-            
-            return new Pokemon(
-                response.Name,
-                response.SpeciesDetails.FlavorTextEntries[0].FlavourText,
-                response.SpeciesDetails.Habitat.Name,
-                response.SpeciesDetails.IsLegendary);
+            return await httpResponse.Content.ReadFromJsonAsync<PokeApiResponse>();
         }
 
         private async Task<SpeciesDetails> GetSpeciesDetails(int id)
         {
-            var httpResponse = await _httpClient.GetAsync($"api/v2/pokemon-species/{id}");
+            var httpResponse = await GetRetryPolicy().ExecuteAsync(async () => await _httpClient.GetAsync($"api/v2/pokemon-species/{id}"));
             return await httpResponse.Content.ReadFromJsonAsync<SpeciesDetails>();
         }
     }

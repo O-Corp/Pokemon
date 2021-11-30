@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Rotomdex.Web.Api.Exceptions;
+using Rotomdex.Domain.Exceptions;
 
 namespace Rotomdex.Web.Api.Middleware
 {
