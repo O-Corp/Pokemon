@@ -14,3 +14,8 @@ Return basic standard information about a Pokemon
         Given an invalid pokemon
         When the request is sent
         Then an NotFound response is returned
+
+    Scenario: Third party is unavailable
+        Given the third party is unavailable
+        When the request is sent
+        Then an ServiceUnavailable response is returned

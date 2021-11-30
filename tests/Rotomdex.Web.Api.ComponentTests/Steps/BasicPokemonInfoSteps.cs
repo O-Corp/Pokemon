@@ -1,10 +1,12 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using Rotomdex.Domain.Adapters;
 using Rotomdex.Domain.Models;
+using Rotomdex.Web.Api.Exceptions;
 using Rotomdex.Web.Api.Models;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -46,6 +48,15 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
             _pokemonApiAdapter
                 .Setup(x => x.GetPokemon(_pokemonName))
                 .ReturnsAsync((Pokemon)null);
+        }
+
+        [Given(@"the third party is unavailable")]
+        public void GivenTheThirdPartyIsUnavailable()
+        {
+            _pokemonName = "xxx";
+            _pokemonApiAdapter
+                .Setup(x => x.GetPokemon(It.IsAny<string>()))
+                .ThrowsAsync(new ThirdPartyUnavailableException("testing", new Exception()));
         }
 
         [When(@"the request is sent")]
