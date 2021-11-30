@@ -57,7 +57,7 @@ namespace Pokemon.Rotomdex.Web.Api.UnitTests.Adapters
         public async Task When_Request_Is_Sent_For_Non_Existent_Pokemon_Then_Response_Is_Null()
         {
             const string nonExistentPokemon = "XXX";
-            _fakeHttpHandler = new FakeHttpHandler();
+            
             _fakeHttpHandler.SetupResponse($"{BaseAddress}/api/v2/pokemon/{nonExistentPokemon}", null, HttpStatusCode.NotFound);
 
             var result = await _subject.GetPokemon(nonExistentPokemon);
@@ -88,7 +88,11 @@ namespace Pokemon.Rotomdex.Web.Api.UnitTests.Adapters
             var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
             if (_responses.TryGetValue(request.RequestUri.ToString(), out var expectation))
             {
-                httpResponseMessage.Content = new StringContent(expectation.Json);
+                if (!string.IsNullOrWhiteSpace(expectation.Json))
+                {
+                    httpResponseMessage.Content = new StringContent(expectation.Json);    
+                }
+                
                 httpResponseMessage.StatusCode = expectation.HttpStatusCode;
             }
 
