@@ -63,8 +63,8 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         [Then(@"the response is")]
         public async Task ThenTheResponseIs(Table table)
         {
-            var expected = table.CreateInstance<PokemonDetails>();
-            var result = await _httpResponse.Content.ReadAsAsync<PokemonDetails>();
+            var expected = table.CreateInstance<PokemonResponse>();
+            var result = await _httpResponse.Content.ReadAsAsync<PokemonResponse>();
             
             Assert.That(result.Habitat, Is.EqualTo(expected.Habitat));
             Assert.That(result.Name, Is.EqualTo(expected.Name));

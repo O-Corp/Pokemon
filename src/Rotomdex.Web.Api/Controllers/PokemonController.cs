@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Rotomdex.Domain.Adapters;
 using Rotomdex.Web.Api.Models;
@@ -9,10 +10,14 @@ namespace Rotomdex.Web.Api.Controllers
     public class PokemonController : ControllerBase
     {
         private readonly IPokemonApiAdapter _pokemonApiAdapter;
+        private readonly IMapper _mapper;
 
-        public PokemonController(IPokemonApiAdapter pokemonApiAdapter)
+        public PokemonController(
+            IPokemonApiAdapter pokemonApiAdapter,
+            IMapper mapper)
         {
             _pokemonApiAdapter = pokemonApiAdapter;
+            _mapper = mapper;
         }
         
         [HttpGet]
@@ -20,15 +25,7 @@ namespace Rotomdex.Web.Api.Controllers
         public async Task<IActionResult> Get([FromRoute] string name)
         {
             var pokemon = await _pokemonApiAdapter.GetPokemon(name);
-            var response = new PokemonDetails
-            {
-                Habitat = pokemon.Habitat,
-                Name = pokemon.Name,
-                DescriptionStandard = pokemon.Description,
-                IsLegendary = pokemon.IsLegendary
-            };
-            
-            return new OkObjectResult(response);
+            return new OkObjectResult(_mapper.Map<PokemonResponse>(pokemon));
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Rotomdex.Web.Api.Models
 {
-    public class PokemonDetails
+    public class PokemonResponse
     {
         public string Name { get; set; }
         

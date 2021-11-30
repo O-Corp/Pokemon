@@ -14,6 +14,7 @@ namespace Rotomdex.Web.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddAutoMapper(typeof(Startup))
                 .AddControllers()
                 .AddApplicationPart(typeof(Startup).Assembly)
                 .AddControllersAsServices();
