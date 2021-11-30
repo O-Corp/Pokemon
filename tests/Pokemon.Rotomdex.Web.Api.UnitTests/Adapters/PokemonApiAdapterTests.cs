@@ -54,7 +54,7 @@ namespace Pokemon.Rotomdex.Web.Api.UnitTests.Adapters
         [Test]
         public async Task When_Invalid_Request_Is_Sent_Then_Response_Is_Null()
         {
-            const string nonExistentPokemon = "XXX";
+            const string nonExistentPokemon = "xxx";
             
             _fakeHttpHandler.SetupResponse($"{BaseAddress}/api/v2/pokemon/{nonExistentPokemon}", null, HttpStatusCode.NotFound);
 

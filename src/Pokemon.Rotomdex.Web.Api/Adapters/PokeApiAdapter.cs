@@ -18,7 +18,7 @@ namespace Pokemon.Rotomdex.Web.Api.Adapters
 
         public async Task<PokeApiResponse> GetPokemon(string name)
         {
-            var httpResponse = await _httpClient.GetAsync($"api/v2/pokemon/{name}");
+            var httpResponse = await _httpClient.GetAsync($"api/v2/pokemon/{name.ToLower()}");
             if (!httpResponse.IsSuccessStatusCode)
             {
                 return null;
