@@ -28,10 +28,11 @@ namespace Pokemon.Rotomdex.IntegrationTests.Adapters
             _subject = new PokeApiAdapter(new HttpClient(), _pokeApiSettings.BaseAddress);
         }
 
-        [Test]
-        public async Task When_Retrieving_Pokemon_Details_Then_Correct_Response_Is_Returned()
+        [TestCase("MEWTWO")]
+        [TestCase("meWtwO")]
+        public async Task When_Retrieving_Pokemon_Details_Then_Correct_Response_Is_Returned(string name)
         {
-            var result = await _subject.GetPokemon("mewtwo");
+            var result = await _subject.GetPokemon(name);
             var expectedUri = new Uri($"{_pokeApiSettings.BaseAddress}api/v2/pokemon-species/{result.Id}/");
             
             Assert.That(result.Id, Is.EqualTo(150));
