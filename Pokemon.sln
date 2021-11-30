@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rotomdex.Web.Api", "src\Rot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rotomdex.Web.Api.UnitTests", "tests\Rotomdex.Web.Api.UnitTests\Rotomdex.Web.Api.UnitTests.csproj", "{80472C68-D86E-4FE5-99FE-7662F84A22FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon.Rotomdex.Web.Api.ComponentTests", "tests\Pokemon.Rotomdex.Web.Api.ComponentTests\Pokemon.Rotomdex.Web.Api.ComponentTests.csproj", "{B0B3F94C-E6AB-4BDB-A08F-22A65302CEBD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rotomdex.Web.Api.ComponentTests", "tests\Rotomdex.Web.Api.ComponentTests\Rotomdex.Web.Api.ComponentTests.csproj", "{B0B3F94C-E6AB-4BDB-A08F-22A65302CEBD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rotomdex.IntegrationTests", "tests\Rotomdex.IntegrationTests\Rotomdex.IntegrationTests.csproj", "{511A0CA1-5EA9-4A19-8456-870640959C98}"
 EndProject

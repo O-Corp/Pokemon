@@ -5,6 +5,6 @@ namespace Rotomdex.Domain.Adapters
 {
     public interface IPokemonApiAdapter
     {
-        Task<Pokemonster> GetPokemon(string name);
+        Task<Pokemon> GetPokemon(string name);
     }
 }

@@ -4,12 +4,11 @@ using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using Rotomdex.Domain.Adapters;
-using Rotomdex.Domain.Models;
 using Rotomdex.Web.Api.Models;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 
-namespace Pokemon.Rotomdex.Web.Api.ComponentTests.Steps
+namespace Rotomdex.Web.Api.ComponentTests.Steps
 {
     [Binding]
     public class BasicPokemonInfoSteps
@@ -35,7 +34,7 @@ namespace Pokemon.Rotomdex.Web.Api.ComponentTests.Steps
             _pokemonName = name;
             _pokemonApiAdapter
                 .Setup(x => x.GetPokemon(name))
-                .ReturnsAsync(new Pokemonster(_pokemonName, "description", "rare", true));
+                .ReturnsAsync(new global::Rotomdex.Domain.Models.Pokemon(_pokemonName, "description", "rare", true));
         }
 
         [When(@"the request is sent")]

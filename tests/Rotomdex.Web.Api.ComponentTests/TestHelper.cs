@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Pokemon.Rotomdex.Web.Api.ComponentTests
+namespace Rotomdex.Web.Api.ComponentTests
 {
     internal static class TestHelper
     {

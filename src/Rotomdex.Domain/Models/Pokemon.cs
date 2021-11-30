@@ -1,8 +1,8 @@
 ﻿namespace Rotomdex.Domain.Models
 {
-    public class Pokemonster
+    public class Pokemon
     {
-        public Pokemonster(
+        public Pokemon(
             string name,
             string description,
             string habitat,

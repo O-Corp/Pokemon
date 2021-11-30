@@ -18,7 +18,7 @@ namespace Rotomdex.Integration.Adapters
             _httpClient.BaseAddress = baseAddress;
         }
 
-        public async Task<Pokemonster> GetPokemon(string name)
+        public async Task<Pokemon> GetPokemon(string name)
         {
             var httpResponse = await _httpClient.GetAsync($"api/v2/pokemon/{name.ToLower()}");
             if (!httpResponse.IsSuccessStatusCode)
@@ -29,7 +29,7 @@ namespace Rotomdex.Integration.Adapters
             var response = await httpResponse.Content.ReadFromJsonAsync<PokeApiResponse>();
             response.SpeciesDetails = await GetSpeciesDetails(response.Id);
             
-            return new Pokemonster(
+            return new Pokemon(
                 response.Name,
                 response.SpeciesDetails.FlavorTextEntries[0].FlavourText,
                 response.SpeciesDetails.Habitat.Name,

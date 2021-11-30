@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Rotomdex.Web.Api;
 
-namespace Pokemon.Rotomdex.Web.Api.ComponentTests
+namespace Rotomdex.Web.Api.ComponentTests
 {
     public class TestStartup : Startup
     {

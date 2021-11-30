@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Pokemon.Rotomdex.Web.Api.ComponentTests.Features
+namespace Rotomdex.Web.Api.ComponentTests.Features
 {
     using TechTalk.SpecFlow;
     using System;

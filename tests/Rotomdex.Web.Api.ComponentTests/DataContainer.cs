@@ -1,7 +1,7 @@
 ﻿using Moq;
 using Rotomdex.Domain.Adapters;
 
-namespace Pokemon.Rotomdex.Web.Api.ComponentTests
+namespace Rotomdex.Web.Api.ComponentTests
 {
     public class DataContainer
     {
