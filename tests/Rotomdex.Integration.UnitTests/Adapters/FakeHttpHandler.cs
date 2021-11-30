@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rotomdex.Web.Api.UnitTests.Adapters
+namespace Rotomdex.Integration.UnitTests.Adapters
 {
     internal class FakeHttpHandler : HttpMessageHandler
     {

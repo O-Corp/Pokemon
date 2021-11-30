@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Rotomdex.Web.Api.UnitTests.Adapters
+namespace Rotomdex.Integration.UnitTests.Adapters
 {
     internal class TestExpectation
     {

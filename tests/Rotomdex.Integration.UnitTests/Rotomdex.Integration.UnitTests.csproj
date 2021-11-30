@@ -14,7 +14,16 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Rotomdex.Web.Api\Rotomdex.Web.Api.csproj" />
+      <None Update="Data\pokemon_details.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Data\pokemon_species.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Rotomdex.Integration\Rotomdex.Integration.csproj" />
     </ItemGroup>
 
 </Project>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using Rotomdex.Integration.Adapters;
 
-namespace Rotomdex.Web.Api.UnitTests.Adapters
+namespace Rotomdex.Integration.UnitTests.Adapters
 {
     [TestFixture]
     public class PokeApiAdapterTests
