@@ -33,7 +33,7 @@ namespace Pokemon.Rotomdex.Web.Api
 
         protected virtual void ConfigureDependencies(IServiceCollection services)
         {
-            services.AddSingleton<IPokemonApiAdapter>(new PokeApiStandardAdapter(new HttpClient(), new Uri("http://foo.com")));
+            services.AddSingleton<IPokemonApiAdapter>(new PokeApiAdapter(new HttpClient(), new Uri("http://foo.com")));
         }
     }
 }

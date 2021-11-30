@@ -12,11 +12,11 @@ namespace Pokemon.Rotomdex.Web.Api.Adapters
         Task<PokeApiResponse> GetPokemon(string name);
     }
 
-    public class PokeApiStandardAdapter : IPokemonApiAdapter
+    public class PokeApiAdapter : IPokemonApiAdapter
     {
         private readonly HttpClient _httpClient;
 
-        public PokeApiStandardAdapter(HttpClient httpClient, Uri baseAddress)
+        public PokeApiAdapter(HttpClient httpClient, Uri baseAddress)
         {
             _httpClient = httpClient;
             _httpClient.BaseAddress = baseAddress;
