@@ -25,6 +25,11 @@ namespace Rotomdex.Web.Api.Controllers
         public async Task<IActionResult> Get([FromRoute] string name)
         {
             var pokemon = await _pokemonApiAdapter.GetPokemon(name);
+            if (pokemon == null)
+            {
+                return new NotFoundResult();
+            }
+
             return new OkObjectResult(_mapper.Map<PokemonResponse>(pokemon));
         }
     }
