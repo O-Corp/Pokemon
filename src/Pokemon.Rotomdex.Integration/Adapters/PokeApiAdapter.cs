@@ -2,9 +2,11 @@
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Pokemon.Rotomdex.Web.Api.Adapters.Contracts;
+using Pokemon.Rotomdex.Domain.Adapters;
+using Pokemon.Rotomdex.Domain.Models;
+using Pokemon.Rotomdex.Integration.Contracts;
 
-namespace Pokemon.Rotomdex.Web.Api.Adapters
+namespace Pokemon.Rotomdex.Integration.Adapters
 {
     public class PokeApiAdapter : IPokemonApiAdapter
     {
@@ -16,7 +18,7 @@ namespace Pokemon.Rotomdex.Web.Api.Adapters
             _httpClient.BaseAddress = baseAddress;
         }
 
-        public async Task<PokeApiResponse> GetPokemon(string name)
+        public async Task<Pokemonster> GetPokemon(string name)
         {
             var httpResponse = await _httpClient.GetAsync($"api/v2/pokemon/{name.ToLower()}");
             if (!httpResponse.IsSuccessStatusCode)
@@ -26,7 +28,12 @@ namespace Pokemon.Rotomdex.Web.Api.Adapters
             
             var response = await httpResponse.Content.ReadFromJsonAsync<PokeApiResponse>();
             response.SpeciesDetails = await GetSpeciesDetails(response.Id);
-            return response;
+            
+            return new Pokemonster(
+                response.Name,
+                response.SpeciesDetails.FlavorTextEntries[0].FlavourText,
+                response.SpeciesDetails.Habitat.Name,
+                response.SpeciesDetails.IsLegendary);
         }
 
         private async Task<SpeciesDetails> GetSpeciesDetails(int id)

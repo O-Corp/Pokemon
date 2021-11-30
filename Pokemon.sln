@@ -12,6 +12,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon.Rotomdex.Web.Api.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon.Rotomdex.IntegrationTests", "tests\Pokemon.Rotomdex.IntegrationTests\Pokemon.Rotomdex.IntegrationTests.csproj", "{511A0CA1-5EA9-4A19-8456-870640959C98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon.Rotomdex.Integration", "src\Pokemon.Rotomdex.Integration\Pokemon.Rotomdex.Integration.csproj", "{04B0EBF3-FE83-4A3A-A6A4-6892E81755B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pokemon.Rotomdex.Domain", "src\Pokemon.Rotomdex.Domain\Pokemon.Rotomdex.Domain.csproj", "{9A773F26-0477-4358-9588-902003F44FAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +26,8 @@ Global
 		{80472C68-D86E-4FE5-99FE-7662F84A22FD} = {593C3D98-C5EE-453F-8C83-AEF928C253E4}
 		{B0B3F94C-E6AB-4BDB-A08F-22A65302CEBD} = {593C3D98-C5EE-453F-8C83-AEF928C253E4}
 		{511A0CA1-5EA9-4A19-8456-870640959C98} = {593C3D98-C5EE-453F-8C83-AEF928C253E4}
+		{04B0EBF3-FE83-4A3A-A6A4-6892E81755B2} = {C3E5657F-9E85-48B0-8D85-E4F853087BA8}
+		{9A773F26-0477-4358-9588-902003F44FAB} = {C3E5657F-9E85-48B0-8D85-E4F853087BA8}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B4106B30-0479-498D-9FEF-C4C65752EB06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -40,5 +46,13 @@ Global
 		{511A0CA1-5EA9-4A19-8456-870640959C98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{511A0CA1-5EA9-4A19-8456-870640959C98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{511A0CA1-5EA9-4A19-8456-870640959C98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04B0EBF3-FE83-4A3A-A6A4-6892E81755B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04B0EBF3-FE83-4A3A-A6A4-6892E81755B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04B0EBF3-FE83-4A3A-A6A4-6892E81755B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04B0EBF3-FE83-4A3A-A6A4-6892E81755B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A773F26-0477-4358-9588-902003F44FAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A773F26-0477-4358-9588-902003F44FAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A773F26-0477-4358-9588-902003F44FAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A773F26-0477-4358-9588-902003F44FAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Pokemon.Rotomdex.Web.Api.Adapters;
+using Pokemon.Rotomdex.Domain.Adapters;
 using Pokemon.Rotomdex.Web.Api.Models;
 
 namespace Pokemon.Rotomdex.Web.Api.Controllers

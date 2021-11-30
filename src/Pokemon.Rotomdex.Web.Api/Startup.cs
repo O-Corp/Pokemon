@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Pokemon.Rotomdex.Web.Api.Adapters;
+using Pokemon.Rotomdex.Domain.Adapters;
+using Pokemon.Rotomdex.Integration.Adapters;
 using Pokemon.Rotomdex.Web.Api.Configuration;
 
 namespace Pokemon.Rotomdex.Web.Api

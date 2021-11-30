@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Pokemon.Rotomdex.Web.Api.Adapters;
+using Pokemon.Rotomdex.Integration.Adapters;
 
 namespace Pokemon.Rotomdex.Web.Api.UnitTests.Adapters
 {
@@ -43,12 +43,10 @@ namespace Pokemon.Rotomdex.Web.Api.UnitTests.Adapters
         {
             var result = await _subject.GetPokemon(PokemonName);
             
-            Assert.That(result.Id, Is.EqualTo(PokemonId));
             Assert.That(result.Name, Is.EqualTo(PokemonName));
-            Assert.That(result.SpeciesDetails.Habitat.Name, Is.EqualTo("urban"));
-            Assert.That(result.SpeciesDetails.IsLegendary, Is.False);
-            Assert.That(result.Species.Url.ToString(), Is.EqualTo($"{BaseAddress}/api/v2/pokemon-species/{PokemonId}/"));
-            Assert.That(result.SpeciesDetails.FlavorTextEntries, Is.Not.Empty);
+            Assert.That(result.Habitat, Is.EqualTo("urban"));
+            Assert.That(result.IsLegendary, Is.False);
+            Assert.That(result.Description, Is.Not.Null);
         }
 
         [Test]

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
-using Pokemon.Rotomdex.Web.Api.Adapters;
-using Pokemon.Rotomdex.Web.Api.Adapters.Contracts;
+using Pokemon.Rotomdex.Domain.Adapters;
+using Pokemon.Rotomdex.Domain.Models;
 using Pokemon.Rotomdex.Web.Api.Models;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -36,15 +35,7 @@ namespace Pokemon.Rotomdex.Web.Api.ComponentTests.Steps
             _pokemonName = name;
             _pokemonApiAdapter
                 .Setup(x => x.GetPokemon(name))
-                .ReturnsAsync(new PokeApiResponse
-                {
-                    Id = 123,
-                    Name = _pokemonName,
-                    Species = new Species
-                    {
-                        Url = new Uri("http://somewhere.com/foo/bar")
-                    }
-                });
+                .ReturnsAsync(new Pokemonster(_pokemonName, "description", "rare", true));
         }
 
         [When(@"the request is sent")]

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Pokemon.Rotomdex.Web.Api.Adapters.Contracts
+namespace Pokemon.Rotomdex.Integration.Contracts
 {
     public class Species
     {
