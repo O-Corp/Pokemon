@@ -22,7 +22,7 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Run Unit Tests
-        run: dotnet test --configuration Release
+        run: dotnet test --filter FullyQualifiedName!~IntegrationTests
         
       - name: Publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp

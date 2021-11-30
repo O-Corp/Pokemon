@@ -1,10 +1,10 @@
-using System;
 using System.Net.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Pokemon.Rotomdex.Web.Api.Adapters;
+using Pokemon.Rotomdex.Web.Api.Configuration;
 
 namespace Pokemon.Rotomdex.Web.Api
 {
@@ -33,7 +33,10 @@ namespace Pokemon.Rotomdex.Web.Api
 
         protected virtual void ConfigureDependencies(IServiceCollection services)
         {
-            services.AddSingleton<IPokemonApiAdapter>(new PokeApiAdapter(new HttpClient(), new Uri("http://foo.com")));
+            var serviceProvider = services.BuildServiceProvider();
+            var apiSettings = serviceProvider.GetService<PokeApiSettings>();
+
+            services.AddSingleton<IPokemonApiAdapter>(new PokeApiAdapter(new HttpClient(), apiSettings.BaseAddress));
         }
     }
 }
