@@ -76,6 +76,7 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Translate Pokemon to Yoda description")]
         [NUnit.Framework.TestCaseAttribute("mewtwo", "Ye Olde Shakespeare Talk", "cave", "true", null)]
+        [NUnit.Framework.TestCaseAttribute("dragonite", "Ye Olde Shakespeare Talk", "rare", "true", null)]
         public virtual void TranslatePokemonToYodaDescription(string name, string expectedDecription, string expectedHabitat, string expectedLegendary, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
@@ -106,7 +107,7 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
             {
                 this.ScenarioStart();
 #line 5
-        testRunner.Given("a request to translate mewtwo", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+        testRunner.Given(string.Format("a request to translate {0}", name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 6
         testRunner.When("the request is sent", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -120,7 +121,7 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
                             "Habitat",
                             "Is Legendary"});
                 table2.AddRow(new string[] {
-                            "mewtwo",
+                            string.Format("{0}", name),
                             string.Format("{0}", expectedDecription),
                             string.Format("{0}", expectedHabitat),
                             string.Format("{0}", expectedLegendary)});
