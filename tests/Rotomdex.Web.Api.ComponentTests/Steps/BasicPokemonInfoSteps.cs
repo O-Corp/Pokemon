@@ -98,7 +98,7 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         {
             using (var client = TestHelper.CreateHttpClient(_dataContainer))
             {
-                _httpResponse = await client.GetAsync($"http://localhost/rotomdex/v1/pokemon/{_pokeRequest.Name}");
+                _httpResponse = await client.GetAsync($"http://localhost/rotomdex/v1/pokemon/{_pokeRequest.Name}?lang={_pokeRequest.Language}");
             }
         }
 

@@ -77,6 +77,7 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
         [NUnit.Framework.DescriptionAttribute("Successfully retrieve basic information about a Pokemon")]
         [NUnit.Framework.TestCaseAttribute("en", "It was created by a scientist.", null)]
         [NUnit.Framework.TestCaseAttribute("fr", "Il a été créé par un scientifique.", null)]
+        [NUnit.Framework.TestCaseAttribute("", "It was created by a scientist.", null)]
         public virtual void SuccessfullyRetrieveBasicInformationAboutAPokemon(string language, string description, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
@@ -143,7 +144,7 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Attemping to retrieve information about a non-existent pokemon", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 19
+#line 20
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -163,13 +164,13 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
             else
             {
                 this.ScenarioStart();
-#line 20
+#line 21
         testRunner.Given("an invalid pokemon", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 21
+#line 22
         testRunner.When("the request is sent", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 22
+#line 23
         testRunner.Then("an NotFound response is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -183,7 +184,7 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Third party is unavailable", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 24
+#line 25
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -203,16 +204,16 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
             else
             {
                 this.ScenarioStart();
-#line 25
+#line 26
         testRunner.Given("a valid request to retrieve information about arcanine", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 26
+#line 27
         testRunner.And("the third party is unavailable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 27
+#line 28
         testRunner.When("the request is sent", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 28
+#line 29
         testRunner.Then("an ServiceUnavailable response is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

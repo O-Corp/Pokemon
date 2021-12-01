@@ -15,6 +15,7 @@ Return basic standard information about a Pokemon
       | Language | Description                        |
       | en       | It was created by a scientist.     |
       | fr       | Il a été créé par un scientifique. |
+      |          | It was created by a scientist.     |
 
     Scenario: Attemping to retrieve information about a non-existent pokemon
         Given an invalid pokemon
