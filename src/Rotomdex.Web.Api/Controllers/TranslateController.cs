@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Rotomdex.Domain.DTOs;
@@ -25,7 +26,15 @@ namespace Rotomdex.Web.Api.Controllers
         {
             var pokemon = await _pokemonService.GetPokemon(new PokeRequest { Name = request.Name });
             var response = _mapper.Map<PokemonResponse>(pokemon);
-            response.DescriptionStandard = "Fear is the path to the dark side";
+
+            if (pokemon.Habitat.Equals("rare", StringComparison.CurrentCultureIgnoreCase) || pokemon.IsLegendary)
+            {
+                response.DescriptionStandard = "Fear is the path to the dark side";    
+            }
+            else
+            {
+                response.DescriptionStandard = "Give every man thy ear, but few thy voice";
+            }
             
             return new OkObjectResult(response);
         }
