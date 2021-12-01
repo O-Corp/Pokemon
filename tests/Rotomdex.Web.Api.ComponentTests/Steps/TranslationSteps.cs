@@ -1,7 +1,13 @@
-﻿using System.Net;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Moq;
 using NUnit.Framework;
+using Rotomdex.Domain.DTOs;
+using Rotomdex.Integration.Adapters;
+using Rotomdex.Integration.Contracts;
 using Rotomdex.Web.Api.Models;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -14,29 +20,68 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
     {
         private DataContainer _dataContainer;
         private HttpResponseMessage _httpResponse;
-        private TranslationRequest _payload;
+        private Mock<IPokemonApiAdapter> _pokemonApiAdapter;
+        private string _habitat;
+        private bool _isLegendary;
+        private string _pokemon;
 
         [Before]
         public void Setup()
         {
-            _dataContainer = new DataContainer();
-        }
-        
-        [Given(@"a request to translate (.*)")]
-        public void GivenARequestToTranslate(string name)
-        {
-            _payload = new TranslationRequest
+            _pokemonApiAdapter = new Mock<IPokemonApiAdapter>();
+            _dataContainer = new DataContainer
             {
-                Name = name
+                ApiAdapter = _pokemonApiAdapter.Object
             };
         }
         
-        [When(@"the request is sent")]
-        public async Task WhenTheRequestIsSent()
+        [Given(@"the pokemon (.*) exists")]
+        public void GivenThePokemonExists(string name)
         {
+            _pokemon = name;
+        }
+        
+        [Given(@"its habitat is (.*)")]
+        public void GivenItsHabitatIs(string habitat)
+        {
+            _habitat = habitat;
+        }
+        
+        [Given(@"its legendary status is (.*)")]
+        public void GivenTheLegendaryStatusIs(bool isLegendary)
+        {
+            _isLegendary = isLegendary;
+        }
+        
+        [When(@"the POST request is sent")]
+        public async Task WhenThePostRequestIsSent()
+        {
+            _pokemonApiAdapter
+                .Setup(x => x.GetPokemon(It.Is<PokeRequest>(y => y.Name == _pokemon)))
+                .ReturnsAsync(new PokeApiResponse
+                {
+                    Id = 123,
+                    Name = _pokemon,
+                    Species = new Species { Url = new Uri("http://foo.com/species/123") },
+                    SpeciesDetails = new SpeciesDetails
+                    {
+                        Habitat = new Habitat { Name = _habitat },
+                        IsLegendary = _isLegendary,
+                        FlavorTextEntries = new List<Description>
+                        {
+                            new()
+                            {
+                                FlavourText = "It was created by a scientist.",
+                                Language = new Language { Name = "en" }
+                            }
+                        }
+                    }
+                });
+            
             using (var client = TestHelper.CreateHttpClient(_dataContainer))
             {
-                _httpResponse = await client.PostAsJsonAsync($"http://localhost/rotomdex/v1/pokemon/translate", _payload);
+                var payload = new TranslationRequest { Name = _pokemon };
+                _httpResponse = await client.PostAsJsonAsync($"http://localhost/rotomdex/v1/pokemon/translate", payload);
             }
         }
 

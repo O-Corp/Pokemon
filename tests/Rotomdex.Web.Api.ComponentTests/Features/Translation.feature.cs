@@ -107,12 +107,18 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
             {
                 this.ScenarioStart();
 #line 5
-        testRunner.Given(string.Format("a request to translate {0}", name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+        testRunner.Given(string.Format("the pokemon {0} exists", name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 6
-        testRunner.When("the request is sent", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+        testRunner.And(string.Format("its habitat is {0}", expectedHabitat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 7
+        testRunner.And(string.Format("its legendary status is {0}", expectedLegendary), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 8
+        testRunner.When("the POST request is sent", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 9
         testRunner.Then("an OK response is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -125,7 +131,7 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
                             string.Format("{0}", expectedDecription),
                             string.Format("{0}", expectedHabitat),
                             string.Format("{0}", expectedLegendary)});
-#line 8
+#line 10
         testRunner.And("the response is translated with", ((string)(null)), table2, "And ");
 #line hidden
             }

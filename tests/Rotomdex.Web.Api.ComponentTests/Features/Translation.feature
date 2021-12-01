@@ -2,8 +2,10 @@
 Translating Pokemon Descriptions
 
     Scenario: Translate Pokemon to Yoda description
-        Given a request to translate <Name>
-        When the request is sent
+        Given the pokemon <Name> exists
+        And its habitat is <ExpectedHabitat>
+        And its legendary status is <ExpectedLegendary>
+        When the POST request is sent
         Then an OK response is returned
         And the response is translated with
           | Name   | Description Standard | Habitat           | Is Legendary        |
