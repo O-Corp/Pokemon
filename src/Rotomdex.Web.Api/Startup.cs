@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Rotomdex.Domain.Adapters;
+using Rotomdex.Domain.Services;
 using Rotomdex.Integration.Adapters;
+using Rotomdex.Integration.Services;
 using Rotomdex.Web.Api.Configuration;
 using Rotomdex.Web.Api.Middleware;
 
@@ -21,6 +22,8 @@ namespace Rotomdex.Web.Api
                 .AddControllersAsServices();
 
             ConfigureDependencies(services);
+
+            services.AddSingleton<IPokemonService, PokemonService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

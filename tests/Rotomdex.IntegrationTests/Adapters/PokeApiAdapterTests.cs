@@ -35,9 +35,9 @@ namespace Rotomdex.IntegrationTests.Adapters
             var result = await _subject.GetPokemon(new PokeRequest { Name = name });
             
             Assert.That(result.Name, Is.EqualTo("mewtwo"));
-            Assert.That(result.Description, Is.Not.Null);
-            Assert.That(result.Habitat, Is.EqualTo("rare"));
-            Assert.That(result.IsLegendary, Is.True);
+            Assert.That(result.SpeciesDetails.FlavorTextEntries, Is.Not.Empty);
+            Assert.That(result.SpeciesDetails.Habitat.Name, Is.EqualTo("rare"));
+            Assert.That(result.SpeciesDetails.IsLegendary, Is.True);
         }
         
         [Test]

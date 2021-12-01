@@ -1,5 +1,5 @@
 ﻿using Moq;
-using Rotomdex.Domain.Adapters;
+using Rotomdex.Integration.Adapters;
 
 namespace Rotomdex.Web.Api.ComponentTests
 {

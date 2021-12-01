@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
-using Rotomdex.Domain.Adapters;
 using Rotomdex.Domain.DTOs;
 using Rotomdex.Domain.Exceptions;
-using Rotomdex.Domain.Models;
+using Rotomdex.Integration.Adapters;
+using Rotomdex.Integration.Contracts;
 using Rotomdex.Web.Api.Models;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -17,6 +18,11 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
     [Binding]
     public class BasicPokemonInfoSteps
     {
+        private const string EnglishDescription = "It was created by a scientist.";
+        private const string FrenchDescription = "Il a été créé par un scientifique.";
+        private const string EnglishLanguageCode = "en";
+        private const string FrenchLanguageCode = "fr";
+        
         private PokeRequest _pokeRequest;
         private HttpResponseMessage _httpResponse;
         private DataContainer _dataContainer;
@@ -31,15 +37,43 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
                 ApiAdapter = _pokemonApiAdapter.Object
             };
         }
-        
+
         [Given(@"a valid request to retrieve information about (.*)")]
         public void GivenAValidRequestToRetrieveInformationAbout(string name)
         {
             _pokeRequest = new PokeRequest { Name = name };
-            var pokemon = new Pokemon(name, "It was created by a scientist.", "rare", true);
             _pokemonApiAdapter
                 .Setup(x => x.GetPokemon(It.Is<PokeRequest>(y => y.Name == name)))
-                .ReturnsAsync(pokemon);
+                .ReturnsAsync(new PokeApiResponse
+                {
+                    Id = 123,
+                    Name = name,
+                    Species = new Species { Url = new Uri("http://foo.com/species/123") },
+                    SpeciesDetails = new SpeciesDetails
+                    {
+                        Habitat = new Habitat { Name = "rare" },
+                        IsLegendary = true,
+                        FlavorTextEntries = new List<Description>
+                        {
+                            new()
+                            {
+                                FlavourText = EnglishDescription,
+                                Language = new Language { Name = EnglishLanguageCode }
+                            },
+                            new()
+                            {
+                                FlavourText = FrenchDescription,
+                                Language = new Language { Name = FrenchLanguageCode }
+                            }
+                        },
+                    }
+                });
+        }
+
+        [Given(@"with language of (.*)")]
+        public void GivenWithLanguageOf(string language)
+        {
+            _pokeRequest.Language = language;
         }
 
         [Given(@"an invalid pokemon")]
@@ -48,7 +82,7 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
             _pokeRequest = new PokeRequest { Name = "xxx" };
             _pokemonApiAdapter
                 .Setup(x => x.GetPokemon(_pokeRequest))
-                .ReturnsAsync((Pokemon)null);
+                .ReturnsAsync((PokeApiResponse)null);
         }
 
         [Given(@"the third party is unavailable")]
@@ -85,7 +119,7 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         {
             var expected = table.CreateInstance<PokemonResponse>();
             var result = await _httpResponse.Content.ReadAsAsync<PokemonResponse>();
-            
+
             Assert.That(result.Habitat, Is.EqualTo(expected.Habitat));
             Assert.That(result.Name, Is.EqualTo(expected.Name));
             Assert.That(result.DescriptionStandard, Is.EqualTo(expected.DescriptionStandard));

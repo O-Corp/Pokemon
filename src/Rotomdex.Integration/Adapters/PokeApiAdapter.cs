@@ -6,14 +6,17 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Polly;
 using Polly.Retry;
-using Rotomdex.Domain.Adapters;
 using Rotomdex.Domain.DTOs;
 using Rotomdex.Domain.Exceptions;
-using Rotomdex.Domain.Models;
 using Rotomdex.Integration.Contracts;
 
 namespace Rotomdex.Integration.Adapters
 {
+    public interface IPokemonApiAdapter
+    {
+        Task<PokeApiResponse> GetPokemon(PokeRequest request);
+    }
+    
     public class PokeApiAdapter : IPokemonApiAdapter
     {
         private readonly HttpClient _httpClient;
@@ -24,7 +27,7 @@ namespace Rotomdex.Integration.Adapters
             _httpClient.BaseAddress = baseAddress;
         }
 
-        public async Task<Pokemon> GetPokemon(PokeRequest request)
+        public async Task<PokeApiResponse> GetPokemon(PokeRequest request)
         {
             try
             {
@@ -32,13 +35,7 @@ namespace Rotomdex.Integration.Adapters
                 if (apiResponse != null)
                 {
                     apiResponse.SpeciesDetails = await GetSpeciesDetails(apiResponse.Id);
-                    
-                    // TODO: use automapper here?
-                    return new Pokemon(
-                        apiResponse.Name,
-                        apiResponse.SpeciesDetails.FlavorTextEntries[0].FlavourText, // TODO: tease this logic out
-                        apiResponse.SpeciesDetails.Habitat.Name,
-                        apiResponse.SpeciesDetails.IsLegendary);
+                    return apiResponse;
                 }
 
                 return null;

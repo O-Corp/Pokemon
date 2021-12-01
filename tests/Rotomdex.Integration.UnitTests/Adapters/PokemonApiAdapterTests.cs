@@ -40,17 +40,22 @@ namespace Rotomdex.Integration.UnitTests.Adapters
             Assert.That(_fakeHttpHandler.HttpRequests[1].RequestUri.ToString(), Is.EqualTo($"{BaseAddress}/api/v2/pokemon-species/{PokemonId}"));
         }
         
-        [Test]
-        public async Task When_Valid_Request_Is_Sent_Then_Correct_Response_Is_Returned()
+        [TestCase("en", "It can freely recombine its own cellular structure to\ntransform into other life-forms.")]
+        [TestCase("fr", "Il a la capacité de modifier sa\nstructure cellulaire pour prendre\nl’apparence de ce qu’il voit.")]
+        public async Task When_Valid_Request_Is_Sent_Then_Correct_Response_Is_Returned(string language, string expectedDescription)
         {
-            var result = await _subject.GetPokemon(new PokeRequest { Name = PokemonName });
+            var result = await _subject.GetPokemon(new PokeRequest
+            {
+                Name = PokemonName,
+                Language = language
+            });
             
             Assert.That(result.Name, Is.EqualTo(PokemonName));
-            Assert.That(result.Habitat, Is.EqualTo("urban"));
-            Assert.That(result.IsLegendary, Is.False);
-            Assert.That(result.Description, Is.Not.Null);
+            Assert.That(result.SpeciesDetails.Habitat.Name, Is.EqualTo("urban"));
+            Assert.That(result.SpeciesDetails.IsLegendary, Is.False);
+            Assert.That(result.SpeciesDetails.FlavorTextEntries, Is.Not.Empty);
         }
-
+        
         [Test]
         public async Task When_Invalid_Request_Is_Sent_Then_Response_Is_Null()
         {

@@ -2,9 +2,9 @@
 using Rotomdex.Domain.DTOs;
 using Rotomdex.Domain.Models;
 
-namespace Rotomdex.Domain.Adapters
+namespace Rotomdex.Domain.Services
 {
-    public interface IPokemonApiAdapter
+    public interface IPokemonService
     {
         Task<Pokemon> GetPokemon(PokeRequest request);
     }
