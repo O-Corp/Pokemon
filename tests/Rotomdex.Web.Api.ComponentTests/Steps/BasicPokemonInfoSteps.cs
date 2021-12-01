@@ -15,6 +15,7 @@ using TechTalk.SpecFlow.Assist;
 
 namespace Rotomdex.Web.Api.ComponentTests.Steps
 {
+    [Scope(Feature = "BasicPokemonInfo")]
     [Binding]
     public class BasicPokemonInfoSteps
     {
