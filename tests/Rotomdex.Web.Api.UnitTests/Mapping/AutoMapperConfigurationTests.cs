@@ -8,6 +8,16 @@ namespace Rotomdex.Web.Api.UnitTests.Mapping
     public class AutoMapperConfigurationTests
     {
         [Test]
+        public void Api_Mapping_Profile_Configuration_Is_Valid()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<ApiMappingProfile>();
+            });
+            config.AssertConfigurationIsValid();
+        }
+        
+        [Test]
         public void Domain_Mapping_Profile_Configuration_Is_Valid()
         {
             var config = new MapperConfiguration(cfg =>

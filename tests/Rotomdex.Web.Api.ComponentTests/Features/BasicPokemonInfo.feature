@@ -16,6 +16,7 @@ Return basic standard information about a Pokemon
         Then an NotFound response is returned
 
     Scenario: Third party is unavailable
-        Given the third party is unavailable
+        Given a valid request to retrieve information about arcanine
+        And the third party is unavailable
         When the request is sent
         Then an ServiceUnavailable response is returned

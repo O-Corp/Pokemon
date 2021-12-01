@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Rotomdex.Domain.DTOs;
 using Rotomdex.Domain.Exceptions;
 using Rotomdex.Integration.Adapters;
 
@@ -33,7 +34,7 @@ namespace Rotomdex.Integration.UnitTests.Adapters
         [Test]
         public async Task When_Request_Is_Sent_Then_The_Correct_Uri_Is_Used()
         {
-            await _subject.GetPokemon(PokemonName);
+            await _subject.GetPokemon(new PokeRequest { Name = PokemonName });
 
             Assert.That(_fakeHttpHandler.HttpRequests[0].RequestUri.ToString(), Is.EqualTo($"{BaseAddress}/api/v2/pokemon/{PokemonName}"));
             Assert.That(_fakeHttpHandler.HttpRequests[1].RequestUri.ToString(), Is.EqualTo($"{BaseAddress}/api/v2/pokemon-species/{PokemonId}"));
@@ -42,7 +43,7 @@ namespace Rotomdex.Integration.UnitTests.Adapters
         [Test]
         public async Task When_Valid_Request_Is_Sent_Then_Correct_Response_Is_Returned()
         {
-            var result = await _subject.GetPokemon(PokemonName);
+            var result = await _subject.GetPokemon(new PokeRequest { Name = PokemonName });
             
             Assert.That(result.Name, Is.EqualTo(PokemonName));
             Assert.That(result.Habitat, Is.EqualTo("urban"));
@@ -57,7 +58,7 @@ namespace Rotomdex.Integration.UnitTests.Adapters
             
             _fakeHttpHandler.SetupResponse($"{BaseAddress}/api/v2/pokemon/{nonExistentPokemon}", null, HttpStatusCode.NotFound);
 
-            var result = await _subject.GetPokemon(nonExistentPokemon);
+            var result = await _subject.GetPokemon(new PokeRequest { Name = nonExistentPokemon });
 
             Assert.That(result, Is.Null);
         }
@@ -66,7 +67,7 @@ namespace Rotomdex.Integration.UnitTests.Adapters
         public void When_A_Transient_Error_Occurs_Then_Correct_Exception_Is_Thrown()
         {
             _subject = new PokeApiAdapter(new HttpClient(new ErrorHttpHandler()), new Uri("http://foo.com/"));
-            Assert.ThrowsAsync<ThirdPartyUnavailableException>(async () => await _subject.GetPokemon("dragonite"));
+            Assert.ThrowsAsync<ThirdPartyUnavailableException>(async () => await _subject.GetPokemon(new PokeRequest { Name = "dragonite" }));
         }
     }
 }

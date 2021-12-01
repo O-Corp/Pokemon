@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Rotomdex.Domain.Adapters;
+using Rotomdex.Domain.DTOs;
 using Rotomdex.Web.Api.Models;
 
 namespace Rotomdex.Web.Api.Controllers
@@ -22,9 +23,9 @@ namespace Rotomdex.Web.Api.Controllers
         
         [HttpGet]
         [Route("{name}")]
-        public async Task<IActionResult> Get([FromRoute] string name)
+        public async Task<IActionResult> Get([FromRoute] PokemonRequestFilter request)
         {
-            var pokemon = await _pokemonApiAdapter.GetPokemon(name);
+            var pokemon = await _pokemonApiAdapter.GetPokemon(_mapper.Map<PokeRequest>(request));
             if (pokemon == null)
             {
                 return new NotFoundResult();

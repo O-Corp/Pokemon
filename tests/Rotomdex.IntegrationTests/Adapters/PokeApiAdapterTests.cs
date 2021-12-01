@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
+using Rotomdex.Domain.DTOs;
 using Rotomdex.Integration.Adapters;
 using Rotomdex.Web.Api.Configuration;
 
@@ -31,7 +32,7 @@ namespace Rotomdex.IntegrationTests.Adapters
         [TestCase("meWtwO")]
         public async Task When_Retrieving_Pokemon_Details_Then_Correct_Response_Is_Returned(string name)
         {
-            var result = await _subject.GetPokemon(name);
+            var result = await _subject.GetPokemon(new PokeRequest { Name = name });
             
             Assert.That(result.Name, Is.EqualTo("mewtwo"));
             Assert.That(result.Description, Is.Not.Null);
@@ -42,7 +43,7 @@ namespace Rotomdex.IntegrationTests.Adapters
         [Test]
         public async Task When_Retrieving_Pokemon_Details_For_Non_Existent_Pokemon_Then_Return_Null()
         {
-            var result = await _subject.GetPokemon("XXX");
+            var result = await _subject.GetPokemon(new PokeRequest { Name = "xxx" });
             Assert.That(result, Is.Null);
         }
     }
