@@ -25,7 +25,7 @@ namespace Rotomdex.Web.Api.Controllers
         {
             var pokemon = await _pokemonService.GetPokemon(new PokeRequest { Name = request.Name });
             var response = _mapper.Map<PokemonResponse>(pokemon);
-            response.DescriptionStandard = "Ye Olde Shakespeare Talk";
+            response.DescriptionStandard = "Fear is the path to the dark side";
             
             return new OkObjectResult(response);
         }
