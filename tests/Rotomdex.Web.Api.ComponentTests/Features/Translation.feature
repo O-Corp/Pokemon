@@ -7,6 +7,7 @@ Translating Pokemon Descriptions
         And its legendary status is <ExpectedLegendary>
         When the POST request is sent
         Then an OK response is returned
+        And the translation API is called
         And the response is translated with
           | Name   | Description Standard | Habitat           | Is Legendary        |
           | <Name> | <ExpectedDecription> | <ExpectedHabitat> | <ExpectedLegendary> |

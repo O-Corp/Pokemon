@@ -14,7 +14,9 @@ namespace Rotomdex.Web.Api.Controllers
         private readonly IPokemonService _pokemonService;
         private readonly IMapper _mapper;
 
-        public TranslateController(IPokemonService pokemonService, IMapper mapper)
+        public TranslateController(
+            IPokemonService pokemonService,
+            IMapper mapper)
         {
             _pokemonService = pokemonService;
             _mapper = mapper;

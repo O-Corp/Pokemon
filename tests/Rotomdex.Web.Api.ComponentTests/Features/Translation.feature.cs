@@ -122,6 +122,9 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
 #line 9
         testRunner.Then("an OK response is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
+#line 10
+        testRunner.And("the translation API is called", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
                 TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                             "Name",
                             "Description Standard",
@@ -132,7 +135,7 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
                             string.Format("{0}", expectedDecription),
                             string.Format("{0}", expectedHabitat),
                             string.Format("{0}", expectedLegendary)});
-#line 10
+#line 11
         testRunner.And("the response is translated with", ((string)(null)), table2, "And ");
 #line hidden
             }

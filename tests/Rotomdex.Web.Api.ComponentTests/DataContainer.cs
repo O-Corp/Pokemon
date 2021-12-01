@@ -8,8 +8,11 @@ namespace Rotomdex.Web.Api.ComponentTests
         public DataContainer()
         {
             ApiAdapter = Mock.Of<IPokemonApiAdapter>();
+            TranslationsAdapter = Mock.Of<ITranslationsApiAdapter>();
         }
         
         public IPokemonApiAdapter ApiAdapter { get; set; }
+        
+        public ITranslationsApiAdapter TranslationsAdapter { get; set; }
     }
 }

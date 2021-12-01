@@ -21,6 +21,7 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         private DataContainer _dataContainer;
         private HttpResponseMessage _httpResponse;
         private Mock<IPokemonApiAdapter> _pokemonApiAdapter;
+        private Mock<ITranslationsApiAdapter> _translationsApiAdapter;
         private string _habitat;
         private bool _isLegendary;
         private string _pokemon;
@@ -29,9 +30,11 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         public void Setup()
         {
             _pokemonApiAdapter = new Mock<IPokemonApiAdapter>();
+            _translationsApiAdapter = new Mock<ITranslationsApiAdapter>();
             _dataContainer = new DataContainer
             {
-                ApiAdapter = _pokemonApiAdapter.Object
+                ApiAdapter = _pokemonApiAdapter.Object,
+                TranslationsAdapter = _translationsApiAdapter.Object
             };
         }
         
@@ -101,5 +104,11 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
             Assert.That(result.Name, Is.EqualTo(expected.Name));
             Assert.That(result.DescriptionStandard, Is.EqualTo(expected.DescriptionStandard));
             Assert.That(result.IsLegendary, Is.EqualTo(expected.IsLegendary));        }
+
+        [Then(@"the translation API is called")]
+        public void ThenTheTranslationApiIsCalled()
+        {
+            _translationsApiAdapter.Verify(x => x.Translate(It.IsAny<string>()), Times.Once());
+        }
     }
 }
