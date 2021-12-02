@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using Rotomdex.Domain.DTOs;
 using Rotomdex.Integration.Adapters;
-using Rotomdex.Integration.Contracts.PokeApi;
 using Rotomdex.Web.Api.ComponentTests.Fakes;
 using Rotomdex.Web.Api.Models;
 using TechTalk.SpecFlow;
@@ -21,14 +18,13 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
     {
         private DataContainer _dataContainer;
         private HttpResponseMessage _httpResponse;
+        private PokeApiResponseBuilder _pokeApiResponseBuilder;
         private Mock<IPokemonApiAdapter> _pokemonApiAdapter;
-        private string _habitat;
-        private bool _isLegendary;
-        private string _pokemon;
 
         [Before]
         public void Setup()
         {
+            _pokeApiResponseBuilder = new PokeApiResponseBuilder().WithValidResponse();
             _pokemonApiAdapter = new Mock<IPokemonApiAdapter>();
             _dataContainer = new DataContainer
             {
@@ -37,54 +33,36 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
                 ShakespeareTranslationsAdapter = new FakeShakespeareTranslator()
             };
         }
-        
+
         [Given(@"the pokemon (.*) exists")]
         public void GivenThePokemonExists(string name)
         {
-            _pokemon = name;
+            _pokeApiResponseBuilder.WithName(name);
         }
 
         [Given(@"its habitat is (.*)")]
         public void GivenItsHabitatIs(string habitat)
         {
-            _habitat = habitat;
+            _pokeApiResponseBuilder.WithHabitat(habitat);
         }
 
         [Given(@"its legendary status is (.*)")]
         public void GivenTheLegendaryStatusIs(bool isLegendary)
         {
-            _isLegendary = isLegendary;
+            _pokeApiResponseBuilder.WithLegendary(isLegendary);
         }
 
         [When(@"the POST request is sent")]
         public async Task WhenThePostRequestIsSent()
         {
-            // TODO: tidy this up, use builder
+            var pokeApiResponse = _pokeApiResponseBuilder.Build();
             _pokemonApiAdapter
-                .Setup(x => x.GetPokemon(It.Is<PokeRequest>(y => y.Name == _pokemon)))
-                .ReturnsAsync(new PokeApiResponse
-                {
-                    Id = 123,
-                    Name = _pokemon,
-                    Species = new Species { Url = new Uri("http://foo.com/species/123") },
-                    SpeciesDetails = new SpeciesDetails
-                    {
-                        Habitat = new Habitat { Name = _habitat },
-                        IsLegendary = _isLegendary,
-                        FlavorTextEntries = new List<Description>
-                        {
-                            new()
-                            {
-                                FlavourText = "It was created by a scientist.",
-                                Language = new Language { Name = "en" }
-                            }
-                        }
-                    }
-                });
+                .Setup(x => x.GetPokemon(It.Is<PokeRequest>(y => y.Name == pokeApiResponse.Name)))
+                .ReturnsAsync(pokeApiResponse);
 
             using (var client = TestHelper.CreateHttpClient(_dataContainer))
             {
-                var payload = new TranslationRequest { Name = _pokemon };
+                var payload = new TranslationRequest { Name = pokeApiResponse.Name };
                 _httpResponse = await client.PostAsJsonAsync($"http://localhost/rotomdex/v1/pokemon/translate", payload);
             }
         }
@@ -96,7 +74,7 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         }
 
         [Then(@"the POST response is")]
-        public async Task ThenTheResponseIsTranslatedWith(Table table)
+        public async Task ThenThePostResponseIs(Table table)
         {
             var expected = table.CreateInstance<PokemonResponse>();
             var result = await _httpResponse.Content.ReadAsAsync<PokemonResponse>();
@@ -112,7 +90,7 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         {
             Assert.That(((FakeYodaTranslator)_dataContainer.YodaTranslationsAdapter).Text, Is.Not.Null);
         }
-        
+
         [Then(@"the Shakespeare translation API is called")]
         public void ThenTheShakespeareTranslationApiIsCalled()
         {

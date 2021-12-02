@@ -27,21 +27,16 @@ namespace Rotomdex.Integration.Services
         public async Task<Pokemon> Translate(PokeRequest request)
         {
             var pokemon = await _pokemonService.GetPokemon(request);
-            ITranslationsApiAdapter translatorAdapter;
-            
-            if (pokemon.Habitat.Equals("rare", StringComparison.CurrentCultureIgnoreCase) || pokemon.IsLegendary)
-            {
-                translatorAdapter= _translatorFactory.Create(TranslationType.Yoda);
-            }
-            else
-            {
-                translatorAdapter = _translatorFactory.Create(TranslationType.Shakespeare);
-            }
-            
+            var translatorAdapter = _translatorFactory.Create(UseYodaTranslation(pokemon) ? TranslationType.Yoda : TranslationType.Shakespeare);
             var translationResponse = await translatorAdapter.Translate(pokemon.Description);
             pokemon.Description = translationResponse.Contents.Translated;
 
             return pokemon;
+        }
+
+        private static bool UseYodaTranslation(Pokemon pokemon)
+        {
+            return pokemon.Habitat.Equals("rare", StringComparison.CurrentCultureIgnoreCase) || pokemon.IsLegendary;
         }
     }
 }

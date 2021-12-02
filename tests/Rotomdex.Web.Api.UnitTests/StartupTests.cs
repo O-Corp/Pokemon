@@ -17,10 +17,8 @@ namespace Rotomdex.Web.Api.UnitTests
                 new WebHostBuilder()
                     .ConfigureServices(x =>
                     {
-                        x.AddSingleton(new PokeApiSettings
-                        {
-                            BaseAddress = new Uri("http://foo.com")
-                        });
+                        x.AddSingleton(new PokeApiSettings { BaseAddress = new Uri("http://foo.com") });
+                        x.AddSingleton(new TranslatorApiSettings { BaseAddress = new Uri("http://foo.com") });
                     })
                     .UseStartup<Startup>()
                     .UseDefaultServiceProvider((c, o) => { o.ValidateOnBuild = true; })
