@@ -26,6 +26,7 @@ namespace Rotomdex.Web.Api
             ConfigureDependencies(services);
 
             services.AddSingleton<IPokemonService, PokemonService>();
+            services.AddSingleton<ITranslationService, TranslationService>();
             services.AddSingleton<ITranslatorFactory, TranslatorFactory>();
         }
 
@@ -44,9 +45,13 @@ namespace Rotomdex.Web.Api
         protected virtual void ConfigureDependencies(IServiceCollection services)
         {
             var serviceProvider = services.BuildServiceProvider();
+            
             var apiSettings = serviceProvider.GetService<PokeApiSettings>();
-
             services.AddSingleton<IPokemonApiAdapter>(new PokeApiAdapter(new HttpClient(), apiSettings.BaseAddress));
+
+            var translatorApiSettings = serviceProvider.GetService<TranslatorApiSettings>();
+            services.AddSingleton<ITranslationsApiAdapter>(new YodaTranslatorAdapter(new HttpClient(), translatorApiSettings.BaseAddress));
+            services.AddSingleton<ITranslationsApiAdapter>(new ShakespeareTranslatorAdapter(new HttpClient(), translatorApiSettings.BaseAddress));
         }
     }
 }

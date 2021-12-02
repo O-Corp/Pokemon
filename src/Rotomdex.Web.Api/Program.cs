@@ -22,6 +22,10 @@ namespace Rotomdex.Web.Api
                     var apiSettings = new PokeApiSettings();
                     ctx.Configuration.Bind(nameof(PokeApiSettings), apiSettings);
                     services.AddSingleton(apiSettings);
+
+                    var translatorApiSettings = new TranslatorApiSettings();
+                    ctx.Configuration.Bind(nameof(TranslatorApiSettings), translatorApiSettings);
+                    services.AddSingleton(translatorApiSettings);
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
