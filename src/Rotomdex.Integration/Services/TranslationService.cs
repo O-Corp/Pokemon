@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Rotomdex.Domain.DTOs;
 using Rotomdex.Domain.Models;
 using Rotomdex.Domain.Services;
-using Rotomdex.Integration.Adapters;
 using Rotomdex.Integration.Factories;
 
 namespace Rotomdex.Integration.Services

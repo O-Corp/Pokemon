@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Moq;
@@ -16,21 +17,29 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
     [Scope(Feature = "Translation")]
     public class TranslationSteps
     {
+        private const string YodaTranslatedText = "Fear is the path to the dark side"; // TODO: Use JSON instead
+        private const string ShakespeareTranslatedText = "Give every man thy ear, but few thy voice"; // TODO: Use JSON instead
         private DataContainer _dataContainer;
         private HttpResponseMessage _httpResponse;
         private PokeApiResponseBuilder _pokeApiResponseBuilder;
+        private FakeTranslationHttpMessageHandler _yodaHttpMessageHandler;
+        private FakeTranslationHttpMessageHandler _shakespeareHttpMessageHandler;
         private Mock<IPokemonApiAdapter> _pokemonApiAdapter;
+        private Uri _baseAddress;
 
         [Before]
         public void Setup()
         {
+            _baseAddress = new Uri("http://foo.com");
             _pokeApiResponseBuilder = new PokeApiResponseBuilder().WithValidResponse();
             _pokemonApiAdapter = new Mock<IPokemonApiAdapter>();
+            _yodaHttpMessageHandler = new FakeTranslationHttpMessageHandler(YodaTranslatedText);
+            _shakespeareHttpMessageHandler = new FakeTranslationHttpMessageHandler(ShakespeareTranslatedText);
             _dataContainer = new DataContainer
             {
                 ApiAdapter = _pokemonApiAdapter.Object,
-                YodaTranslationsAdapter = new FakeYodaTranslator(),
-                ShakespeareTranslationsAdapter = new FakeShakespeareTranslator()
+                YodaTranslationsAdapter = new YodaTranslatorAdapter(new HttpClient(_yodaHttpMessageHandler), _baseAddress),
+                ShakespeareTranslationsAdapter = new ShakespeareTranslatorAdapter(new HttpClient(_shakespeareHttpMessageHandler), _baseAddress)
             };
         }
 
@@ -88,13 +97,13 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         [Then(@"the Yoda translation API is called")]
         public void ThenTheYodaTranslationApiIsCalled()
         {
-            Assert.That(((FakeYodaTranslator)_dataContainer.YodaTranslationsAdapter).Text, Is.Not.Null);
+            Assert.That(_yodaHttpMessageHandler.HttpRequest.RequestUri.ToString(), Is.EqualTo($"{_baseAddress}translate/yoda"));
         }
 
         [Then(@"the Shakespeare translation API is called")]
         public void ThenTheShakespeareTranslationApiIsCalled()
         {
-            Assert.That(((FakeShakespeareTranslator)_dataContainer.ShakespeareTranslationsAdapter).Text, Is.Not.Null);
+            Assert.That(_shakespeareHttpMessageHandler.HttpRequest.RequestUri.ToString(), Is.EqualTo($"{_baseAddress}translate/shakespeare"));
         }
     }
 }
