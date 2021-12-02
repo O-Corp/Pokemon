@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -17,8 +18,6 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
     [Scope(Feature = "Translation")]
     public class TranslationSteps
     {
-        private const string YodaTranslatedText = "Fear is the path to the dark side"; // TODO: Use JSON instead
-        private const string ShakespeareTranslatedText = "Give every man thy ear, but few thy voice"; // TODO: Use JSON instead
         private DataContainer _dataContainer;
         private HttpResponseMessage _httpResponse;
         private PokeApiResponseBuilder _pokeApiResponseBuilder;
@@ -33,8 +32,8 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
             _baseAddress = new Uri("http://foo.com");
             _pokeApiResponseBuilder = new PokeApiResponseBuilder().WithValidResponse();
             _pokemonApiAdapter = new Mock<IPokemonApiAdapter>();
-            _yodaHttpMessageHandler = new FakeTranslationHttpMessageHandler(YodaTranslatedText);
-            _shakespeareHttpMessageHandler = new FakeTranslationHttpMessageHandler(ShakespeareTranslatedText);
+            _yodaHttpMessageHandler = new FakeTranslationHttpMessageHandler(File.ReadAllText(@"Data\yoda_translation_response.json"));
+            _shakespeareHttpMessageHandler = new FakeTranslationHttpMessageHandler(File.ReadAllText(@"Data\shakespeare_translation_response.json"));
             _dataContainer = new DataContainer
             {
                 ApiAdapter = _pokemonApiAdapter.Object,

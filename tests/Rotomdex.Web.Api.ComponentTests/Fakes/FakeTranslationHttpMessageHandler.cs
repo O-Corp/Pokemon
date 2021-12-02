@@ -1,8 +1,7 @@
-﻿using System.Net.Http;
-using System.Net.Http.Formatting;
+﻿using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Rotomdex.Integration.Contracts.FunTranslate.Contracts;
 
 namespace Rotomdex.Web.Api.ComponentTests.Fakes
 {
@@ -18,17 +17,12 @@ namespace Rotomdex.Web.Api.ComponentTests.Fakes
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             HttpRequest = request;
-            
-            var httpResponseMessage = new HttpResponseMessage();
-            var translationResponse = new TranslationResponse
+
+            return Task.FromResult(new HttpResponseMessage
             {
-                Contents = new Contents
-                {
-                    Translated = _translatedText
-                }
-            };
-            httpResponseMessage.Content = new ObjectContent<TranslationResponse>(translationResponse, new JsonMediaTypeFormatter());
-            return Task.FromResult(httpResponseMessage);
+                Content = new StringContent(_translatedText),
+                StatusCode = HttpStatusCode.OK
+            });
         }
         
         public HttpRequestMessage HttpRequest { get; private set; }

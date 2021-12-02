@@ -1,0 +1,10 @@
+﻿{
+  "success": {
+    "total": 1
+  },
+  "contents": {
+    "translation": "yoda",
+    "text": "hello world",
+    "translated": "Fear is the path to the dark side"
+  }
+}
