@@ -4,6 +4,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Rotomdex.Domain.DTOs;
 using Rotomdex.Domain.Services;
+using Rotomdex.Integration.Factories;
 using Rotomdex.Web.Api.Models;
 
 namespace Rotomdex.Web.Api.Controllers
@@ -12,16 +13,19 @@ namespace Rotomdex.Web.Api.Controllers
     public class TranslateController
     {
         private readonly IPokemonService _pokemonService;
+        private readonly ITranslatorFactory _translatorFactory;
         private readonly IMapper _mapper;
 
         public TranslateController(
             IPokemonService pokemonService,
+            ITranslatorFactory translatorFactory,
             IMapper mapper)
         {
             _pokemonService = pokemonService;
+            _translatorFactory = translatorFactory;
             _mapper = mapper;
         }
-        
+
         [HttpPost]
         [Route("translate")]
         public async Task<IActionResult> Post([FromBody] TranslationRequest request)
@@ -31,13 +35,17 @@ namespace Rotomdex.Web.Api.Controllers
 
             if (pokemon.Habitat.Equals("rare", StringComparison.CurrentCultureIgnoreCase) || pokemon.IsLegendary)
             {
-                response.DescriptionStandard = "Fear is the path to the dark side";    
+                var translator = _translatorFactory.Create(TranslationType.Yoda);
+                var foo = await translator.Translate(pokemon.Description);
+                response.DescriptionStandard = foo.Contents.Translated;
             }
             else
             {
-                response.DescriptionStandard = "Give every man thy ear, but few thy voice";
+                var translator = _translatorFactory.Create(TranslationType.Shakespeare);
+                var foo = await translator.Translate(pokemon.Description);
+                response.DescriptionStandard = foo.Contents.Translated;
             }
-            
+
             return new OkObjectResult(response);
         }
     }

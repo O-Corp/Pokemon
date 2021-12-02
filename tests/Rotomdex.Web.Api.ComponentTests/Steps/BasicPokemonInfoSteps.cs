@@ -8,7 +8,7 @@ using NUnit.Framework;
 using Rotomdex.Domain.DTOs;
 using Rotomdex.Domain.Exceptions;
 using Rotomdex.Integration.Adapters;
-using Rotomdex.Integration.Contracts;
+using Rotomdex.Integration.Contracts.PokeApi;
 using Rotomdex.Web.Api.Models;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;

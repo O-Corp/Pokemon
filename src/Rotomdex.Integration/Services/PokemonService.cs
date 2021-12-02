@@ -5,7 +5,7 @@ using Rotomdex.Domain.DTOs;
 using Rotomdex.Domain.Models;
 using Rotomdex.Domain.Services;
 using Rotomdex.Integration.Adapters;
-using Rotomdex.Integration.Contracts;
+using Rotomdex.Integration.Contracts.PokeApi;
 
 namespace Rotomdex.Integration.Services
 {

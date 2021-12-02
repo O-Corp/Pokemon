@@ -77,13 +77,12 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
         [NUnit.Framework.DescriptionAttribute("Translate Pokemon to Yoda description")]
         [NUnit.Framework.TestCaseAttribute("mewtwo", "Fear is the path to the dark side", "cave", "true", null)]
         [NUnit.Framework.TestCaseAttribute("dragonite", "Fear is the path to the dark side", "rare", "true", null)]
-        [NUnit.Framework.TestCaseAttribute("pikachu", "Give every man thy ear, but few thy voice", "common", "false", null)]
-        public virtual void TranslatePokemonToYodaDescription(string name, string expectedDecription, string expectedHabitat, string expectedLegendary, string[] exampleTags)
+        public virtual void TranslatePokemonToYodaDescription(string name, string expectedDescription, string expectedHabitat, string expectedLegendary, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("Name", name);
-            argumentsOfScenario.Add("ExpectedDecription", expectedDecription);
+            argumentsOfScenario.Add("ExpectedDescription", expectedDescription);
             argumentsOfScenario.Add("ExpectedHabitat", expectedHabitat);
             argumentsOfScenario.Add("ExpectedLegendary", expectedLegendary);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Translate Pokemon to Yoda description", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
@@ -123,7 +122,7 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
         testRunner.Then("an OK response is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 10
-        testRunner.And("the translation API is called", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.And("the Yoda translation API is called", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                             "Name",
@@ -132,11 +131,78 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
                             "Is Legendary"});
                 table2.AddRow(new string[] {
                             string.Format("{0}", name),
-                            string.Format("{0}", expectedDecription),
+                            string.Format("{0}", expectedDescription),
                             string.Format("{0}", expectedHabitat),
                             string.Format("{0}", expectedLegendary)});
 #line 11
-        testRunner.And("the response is translated with", ((string)(null)), table2, "And ");
+        testRunner.And("the POST response is", ((string)(null)), table2, "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Translate Pokemon to Shakespeare description")]
+        [NUnit.Framework.TestCaseAttribute("pikachu", "Give every man thy ear, but few thy voice", "common", "false", null)]
+        public virtual void TranslatePokemonToShakespeareDescription(string name, string expectedDescription, string expectedHabitat, string expectedLegendary, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Name", name);
+            argumentsOfScenario.Add("ExpectedDescription", expectedDescription);
+            argumentsOfScenario.Add("ExpectedHabitat", expectedHabitat);
+            argumentsOfScenario.Add("ExpectedLegendary", expectedLegendary);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Translate Pokemon to Shakespeare description", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 20
+    this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 21
+        testRunner.Given(string.Format("the pokemon {0} exists", name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 22
+        testRunner.And(string.Format("its habitat is {0}", expectedHabitat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 23
+        testRunner.And(string.Format("its legendary status is {0}", expectedLegendary), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 24
+        testRunner.When("the POST request is sent", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 25
+        testRunner.Then("an OK response is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 26
+        testRunner.And("the Shakespeare translation API is called", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Name",
+                            "Description Standard",
+                            "Habitat",
+                            "Is Legendary"});
+                table3.AddRow(new string[] {
+                            string.Format("{0}", name),
+                            string.Format("{0}", expectedDescription),
+                            string.Format("{0}", expectedHabitat),
+                            string.Format("{0}", expectedLegendary)});
+#line 27
+        testRunner.And("the POST response is", ((string)(null)), table3, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

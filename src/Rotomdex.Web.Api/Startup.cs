@@ -5,8 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Rotomdex.Domain.Services;
 using Rotomdex.Integration.Adapters;
+using Rotomdex.Integration.Factories;
 using Rotomdex.Integration.Services;
 using Rotomdex.Web.Api.Configuration;
+using Rotomdex.Web.Api.Controllers;
 using Rotomdex.Web.Api.Middleware;
 
 namespace Rotomdex.Web.Api
@@ -24,6 +26,7 @@ namespace Rotomdex.Web.Api
             ConfigureDependencies(services);
 
             services.AddSingleton<IPokemonService, PokemonService>();
+            services.AddSingleton<ITranslatorFactory, TranslatorFactory>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

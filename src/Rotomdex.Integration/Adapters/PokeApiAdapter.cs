@@ -8,15 +8,10 @@ using Polly;
 using Polly.Retry;
 using Rotomdex.Domain.DTOs;
 using Rotomdex.Domain.Exceptions;
-using Rotomdex.Integration.Contracts;
+using Rotomdex.Integration.Contracts.PokeApi;
 
 namespace Rotomdex.Integration.Adapters
 {
-    public interface IPokemonApiAdapter
-    {
-        Task<PokeApiResponse> GetPokemon(PokeRequest request);
-    }
-    
     public class PokeApiAdapter : IPokemonApiAdapter
     {
         private readonly HttpClient _httpClient;

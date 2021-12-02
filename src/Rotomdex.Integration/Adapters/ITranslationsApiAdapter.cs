@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
+using Rotomdex.Integration.Contracts.FunTranslate.Contracts;
 
 namespace Rotomdex.Integration.Adapters
 {
     public interface ITranslationsApiAdapter
     {
-        Task<string> Translate(string text);
+        Task<TranslationResponse> Translate(string text);
     }
 }

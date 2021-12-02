@@ -7,7 +7,8 @@ using Moq;
 using NUnit.Framework;
 using Rotomdex.Domain.DTOs;
 using Rotomdex.Integration.Adapters;
-using Rotomdex.Integration.Contracts;
+using Rotomdex.Integration.Contracts.PokeApi;
+using Rotomdex.Web.Api.ComponentTests.Fakes;
 using Rotomdex.Web.Api.Models;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -21,7 +22,6 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         private DataContainer _dataContainer;
         private HttpResponseMessage _httpResponse;
         private Mock<IPokemonApiAdapter> _pokemonApiAdapter;
-        private Mock<ITranslationsApiAdapter> _translationsApiAdapter;
         private string _habitat;
         private bool _isLegendary;
         private string _pokemon;
@@ -30,11 +30,11 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         public void Setup()
         {
             _pokemonApiAdapter = new Mock<IPokemonApiAdapter>();
-            _translationsApiAdapter = new Mock<ITranslationsApiAdapter>();
             _dataContainer = new DataContainer
             {
                 ApiAdapter = _pokemonApiAdapter.Object,
-                TranslationsAdapter = _translationsApiAdapter.Object
+                YodaTranslationsAdapter = new FakeYodaTranslator(),
+                ShakespeareTranslationsAdapter = new FakeShakespeareTranslator()
             };
         }
         
@@ -43,22 +43,23 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         {
             _pokemon = name;
         }
-        
+
         [Given(@"its habitat is (.*)")]
         public void GivenItsHabitatIs(string habitat)
         {
             _habitat = habitat;
         }
-        
+
         [Given(@"its legendary status is (.*)")]
         public void GivenTheLegendaryStatusIs(bool isLegendary)
         {
             _isLegendary = isLegendary;
         }
-        
+
         [When(@"the POST request is sent")]
         public async Task WhenThePostRequestIsSent()
         {
+            // TODO: tidy this up, use builder
             _pokemonApiAdapter
                 .Setup(x => x.GetPokemon(It.Is<PokeRequest>(y => y.Name == _pokemon)))
                 .ReturnsAsync(new PokeApiResponse
@@ -80,7 +81,7 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
                         }
                     }
                 });
-            
+
             using (var client = TestHelper.CreateHttpClient(_dataContainer))
             {
                 var payload = new TranslationRequest { Name = _pokemon };
@@ -94,7 +95,7 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
             Assert.That(_httpResponse.StatusCode, Is.EqualTo(httpStatusCode));
         }
 
-        [Then(@"the response is translated with")]
+        [Then(@"the POST response is")]
         public async Task ThenTheResponseIsTranslatedWith(Table table)
         {
             var expected = table.CreateInstance<PokemonResponse>();
@@ -103,12 +104,19 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
             Assert.That(result.Habitat, Is.EqualTo(expected.Habitat));
             Assert.That(result.Name, Is.EqualTo(expected.Name));
             Assert.That(result.DescriptionStandard, Is.EqualTo(expected.DescriptionStandard));
-            Assert.That(result.IsLegendary, Is.EqualTo(expected.IsLegendary));        }
+            Assert.That(result.IsLegendary, Is.EqualTo(expected.IsLegendary));
+        }
 
-        [Then(@"the translation API is called")]
-        public void ThenTheTranslationApiIsCalled()
+        [Then(@"the Yoda translation API is called")]
+        public void ThenTheYodaTranslationApiIsCalled()
         {
-            _translationsApiAdapter.Verify(x => x.Translate(It.IsAny<string>()), Times.Once());
+            Assert.That(((FakeYodaTranslator)_dataContainer.YodaTranslationsAdapter).Text, Is.Not.Null);
+        }
+        
+        [Then(@"the Shakespeare translation API is called")]
+        public void ThenTheShakespeareTranslationApiIsCalled()
+        {
+            Assert.That(((FakeShakespeareTranslator)_dataContainer.ShakespeareTranslationsAdapter).Text, Is.Not.Null);
         }
     }
 }

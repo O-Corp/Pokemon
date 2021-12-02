@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Rotomdex.Integration.Contracts
+namespace Rotomdex.Integration.Contracts.PokeApi
 {
     public class SpeciesDetails
     {

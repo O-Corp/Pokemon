@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Rotomdex.Integration.Contracts
+namespace Rotomdex.Integration.Contracts.PokeApi
 {
     public class Description
     {

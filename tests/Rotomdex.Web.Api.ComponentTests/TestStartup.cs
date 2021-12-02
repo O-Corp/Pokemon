@@ -14,7 +14,8 @@ namespace Rotomdex.Web.Api.ComponentTests
         protected override void ConfigureDependencies(IServiceCollection services)
         {
             services.AddSingleton(_dataContainer.ApiAdapter);
-            services.AddSingleton(_dataContainer.TranslationsAdapter);
+            services.AddSingleton(_dataContainer.YodaTranslationsAdapter);
+            services.AddSingleton(_dataContainer.ShakespeareTranslationsAdapter);
         }
     }
 }
