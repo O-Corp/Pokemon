@@ -1,10 +1,8 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
 using Rotomdex.Domain.DTOs;
 using Rotomdex.Integration.Adapters;
-using Rotomdex.Web.Api.Configuration;
 
 namespace Rotomdex.IntegrationTests.Adapters
 {
@@ -12,20 +10,11 @@ namespace Rotomdex.IntegrationTests.Adapters
     public class PokeApiAdapterTests
     {
         private PokeApiAdapter _subject;
-        private PokeApiSettings _pokeApiSettings;
 
         [SetUp]
         public void Setup()
         {
-            var config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: false)
-                .AddEnvironmentVariables()
-                .Build();
-            
-            _pokeApiSettings = new PokeApiSettings();
-            config.Bind(nameof(PokeApiSettings), _pokeApiSettings);
-
-            _subject = new PokeApiAdapter(new HttpClient(), _pokeApiSettings.BaseAddress);
+            _subject = new PokeApiAdapter(new HttpClient(), TestConfiguration.PokeApiSettings.BaseAddress);
         }
 
         [TestCase("MEWTWO")]

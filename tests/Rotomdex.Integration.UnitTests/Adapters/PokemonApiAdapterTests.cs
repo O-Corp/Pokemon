@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -7,6 +6,7 @@ using NUnit.Framework;
 using Rotomdex.Domain.DTOs;
 using Rotomdex.Domain.Exceptions;
 using Rotomdex.Integration.Adapters;
+using Rotomdex.Testing.Common.Fakes;
 
 namespace Rotomdex.Integration.UnitTests.Adapters
 {
@@ -16,19 +16,16 @@ namespace Rotomdex.Integration.UnitTests.Adapters
         private const string BaseAddress = "https://pokeapi.co";
         private const string PokemonName = "ditto";
         private const int PokemonId = 132;
+        private FakePokeApiHttpHandler _fakePokeApiHttpHandler;
         private PokeApiAdapter _subject;
-        private FakeHttpHandler _fakeHttpHandler;
 
         [SetUp]
         public async Task Setup()
         {
-            var pokemonStandardJson = await File.ReadAllTextAsync("Data/pokemon_details.json");
-            var pokemonSpeciesJson = await File.ReadAllTextAsync("Data/pokemon_species.json");
-            
-            _fakeHttpHandler = new FakeHttpHandler();
-            _fakeHttpHandler.SetupResponse($"{BaseAddress}/api/v2/pokemon/{PokemonName}", pokemonStandardJson, HttpStatusCode.OK);
-            _fakeHttpHandler.SetupResponse($"{BaseAddress}/api/v2/pokemon-species/{PokemonId}", pokemonSpeciesJson, HttpStatusCode.OK);
-            _subject = new PokeApiAdapter(new HttpClient(_fakeHttpHandler), new Uri(BaseAddress));
+            _fakePokeApiHttpHandler = new FakePokeApiHttpHandler();
+            await _fakePokeApiHttpHandler.SetupResponse($"/api/v2/pokemon/{PokemonName}", PokeApiResponses.PokeApi_Details_Response);
+            await _fakePokeApiHttpHandler.SetupResponse($"/api/v2/pokemon-species/{PokemonId}", PokeApiResponses.PokeApi_Species_Response);
+            _subject = new PokeApiAdapter(new HttpClient(_fakePokeApiHttpHandler), new Uri(BaseAddress));
         }
         
         [Test]
@@ -36,13 +33,13 @@ namespace Rotomdex.Integration.UnitTests.Adapters
         {
             await _subject.GetPokemon(new PokeRequest { Name = PokemonName });
 
-            Assert.That(_fakeHttpHandler.HttpRequests[0].RequestUri.ToString(), Is.EqualTo($"{BaseAddress}/api/v2/pokemon/{PokemonName}"));
-            Assert.That(_fakeHttpHandler.HttpRequests[1].RequestUri.ToString(), Is.EqualTo($"{BaseAddress}/api/v2/pokemon-species/{PokemonId}"));
+            Assert.That(_fakePokeApiHttpHandler.HttpRequests[0].RequestUri.ToString(), Is.EqualTo($"{BaseAddress}/api/v2/pokemon/{PokemonName}"));
+            Assert.That(_fakePokeApiHttpHandler.HttpRequests[1].RequestUri.ToString(), Is.EqualTo($"{BaseAddress}/api/v2/pokemon-species/{PokemonId}"));
         }
-        
+
         [TestCase("en", "It can freely recombine its own cellular structure to\ntransform into other life-forms.")]
         [TestCase("fr", "Il a la capacité de modifier sa\nstructure cellulaire pour prendre\nl’apparence de ce qu’il voit.")]
-        public async Task When_Valid_Request_Is_Sent_Then_Correct_Response_Is_Returned(string language, string expectedDescription)
+        public async Task When_Valid_Request_Is_Sent_With_Language_Filter_Then_Correct_Response_Is_Returned(string language, string expectedDescription)
         {
             var result = await _subject.GetPokemon(new PokeRequest
             {
@@ -57,13 +54,15 @@ namespace Rotomdex.Integration.UnitTests.Adapters
         }
         
         [Test]
-        public async Task When_Invalid_Request_Is_Sent_Then_Response_Is_Null()
+        public async Task When_Request_Is_Sent_For_Pokemon_Does_Not_Exist_Then_Response_Is_Null()
         {
             const string nonExistentPokemon = "xxx";
-            
-            _fakeHttpHandler.SetupResponse($"{BaseAddress}/api/v2/pokemon/{nonExistentPokemon}", null, HttpStatusCode.NotFound);
+            _fakePokeApiHttpHandler.SetupResponse($"/api/v2/pokemon/{nonExistentPokemon}", HttpStatusCode.NotFound);
 
-            var result = await _subject.GetPokemon(new PokeRequest { Name = nonExistentPokemon });
+            var result = await _subject.GetPokemon(new PokeRequest
+            {
+                Name = nonExistentPokemon
+            });
 
             Assert.That(result, Is.Null);
         }

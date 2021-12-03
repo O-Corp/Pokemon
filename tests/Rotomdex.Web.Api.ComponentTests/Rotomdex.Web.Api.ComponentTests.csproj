@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
         <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.10" />
         <PackageReference Include="Moq" Version="4.16.1" />
@@ -20,6 +20,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\Rotomdex.Web.Api\Rotomdex.Web.Api.csproj" />
+      <ProjectReference Include="..\Rotomdex.Testing.Common\Rotomdex.Testing.Common.csproj" />
     </ItemGroup>
 
     <ItemGroup>

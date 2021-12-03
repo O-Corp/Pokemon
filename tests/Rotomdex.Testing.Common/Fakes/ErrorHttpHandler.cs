@@ -2,9 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Rotomdex.Integration.UnitTests.Adapters
+namespace Rotomdex.Testing.Common.Fakes
 {
-    internal class ErrorHttpHandler : HttpMessageHandler
+    public class ErrorHttpHandler : HttpMessageHandler
     {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {

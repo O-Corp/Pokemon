@@ -2,9 +2,8 @@
 Return basic standard information about a Pokemon
 
     Scenario: Successfully retrieve basic information about a Pokemon
-        Given a valid request to retrieve information about mewtwo
-        And with language of <Language>
-        When the request is sent
+        Given that the pokemon mewtwo exists 
+        When a request is made to get information about mewtwo in language of <Language>
         Then an OK response is returned
         And a request is made to the Pokemon API
         And the response is
@@ -17,13 +16,12 @@ Return basic standard information about a Pokemon
       | fr       | Il a été créé par un scientifique. |
       |          | It was created by a scientist.     |
 
-    Scenario: Attemping to retrieve information about a non-existent pokemon
-        Given an invalid pokemon
-        When the request is sent
+    Scenario: Attemping to retrieve information about a Pokemon that does not exist
+        Given the pokemon foobar does not exist
+        When the request is sent to get information about foobar
         Then an NotFound response is returned
 
     Scenario: Third party is unavailable
-        Given a valid request to retrieve information about arcanine
-        And the third party is unavailable
-        When the request is sent
+        Given the third party is unavailable
+        When the request is sent to get information about arcanine
         Then an ServiceUnavailable response is returned

@@ -6,6 +6,10 @@ namespace Rotomdex.Web.Api.ComponentTests
 {
     public class PokeApiResponseBuilder
     {
+        private const string EnglishDescription = "It was created by a scientist.";
+        private const string FrenchDescription = "Il a été créé par un scientifique.";
+        private const string EnglishLanguageCode = "en";
+        private const string FrenchLanguageCode = "fr";
         private PokeApiResponse _response;
 
         public PokeApiResponseBuilder WithValidResponse()
@@ -23,8 +27,13 @@ namespace Rotomdex.Web.Api.ComponentTests
                     {
                         new()
                         {
-                            FlavourText = "It was created by a scientist.",
-                            Language = new Language { Name = "en" }
+                            FlavourText = EnglishDescription,
+                            Language = new Language { Name = EnglishLanguageCode }
+                        },
+                        new()
+                        {
+                            FlavourText = FrenchDescription,
+                            Language = new Language { Name = FrenchLanguageCode }
                         }
                     }
                 }
@@ -38,16 +47,22 @@ namespace Rotomdex.Web.Api.ComponentTests
             _response.Name = value;
             return this;
         }
-        
+
         public PokeApiResponseBuilder WithHabitat(string value)
         {
             _response.SpeciesDetails.Habitat.Name = value;
             return this;
         }
-        
+
         public PokeApiResponseBuilder WithLegendary(bool value)
         {
             _response.SpeciesDetails.IsLegendary = value;
+            return this;
+        }
+
+        public PokeApiResponseBuilder WithInvalidPokemon()
+        {
+            _response = null;
             return this;
         }
 

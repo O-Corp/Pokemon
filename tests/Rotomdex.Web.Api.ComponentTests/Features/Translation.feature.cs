@@ -207,6 +207,76 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
             }
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Fallback to standard description as translation API is unavailable")]
+        [NUnit.Framework.TestCaseAttribute("pikachu", "It was created by a scientist.", "common", "false", null)]
+        public virtual void FallbackToStandardDescriptionAsTranslationAPIIsUnavailable(string name, string expectedDescription, string expectedHabitat, string expectedLegendary, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Name", name);
+            argumentsOfScenario.Add("ExpectedDescription", expectedDescription);
+            argumentsOfScenario.Add("ExpectedHabitat", expectedHabitat);
+            argumentsOfScenario.Add("ExpectedLegendary", expectedLegendary);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fallback to standard description as translation API is unavailable", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 35
+    this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 36
+        testRunner.Given(string.Format("the pokemon {0} exists", name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 37
+        testRunner.And(string.Format("its habitat is {0}", expectedHabitat), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 38
+        testRunner.And(string.Format("its legendary status is {0}", expectedLegendary), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 39
+        testRunner.And("the translation API is unavailable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 40
+        testRunner.When("the POST request is sent", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 41
+        testRunner.Then("an OK response is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 42
+        testRunner.And("the Shakespeare translation API is called", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                            "Name",
+                            "Description Standard",
+                            "Habitat",
+                            "Is Legendary"});
+                table4.AddRow(new string[] {
+                            string.Format("{0}", name),
+                            string.Format("{0}", expectedDescription),
+                            string.Format("{0}", expectedHabitat),
+                            string.Format("{0}", expectedLegendary)});
+#line 43
+        testRunner.And("the POST response is", ((string)(null)), table4, "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

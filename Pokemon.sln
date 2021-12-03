@@ -18,6 +18,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rotomdex.Domain", "src\Roto
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rotomdex.Integration.UnitTests", "tests\Rotomdex.Integration.UnitTests\Rotomdex.Integration.UnitTests.csproj", "{7522EC34-B400-4FD4-84DF-9ACB37EB5DDE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{6485D226-9AFD-46B1-8A59-C96231ECA3D6}"
+ProjectSection(SolutionItems) = preProject
+	.dockerignore = .dockerignore
+	Dockerfile = Dockerfile
+EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rotomdex.Testing.Common", "tests\Rotomdex.Testing.Common\Rotomdex.Testing.Common.csproj", "{93541D30-C604-449A-B958-85F7F8072DFD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +39,7 @@ Global
 		{04B0EBF3-FE83-4A3A-A6A4-6892E81755B2} = {C3E5657F-9E85-48B0-8D85-E4F853087BA8}
 		{9A773F26-0477-4358-9588-902003F44FAB} = {C3E5657F-9E85-48B0-8D85-E4F853087BA8}
 		{7522EC34-B400-4FD4-84DF-9ACB37EB5DDE} = {593C3D98-C5EE-453F-8C83-AEF928C253E4}
+		{93541D30-C604-449A-B958-85F7F8072DFD} = {593C3D98-C5EE-453F-8C83-AEF928C253E4}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B4106B30-0479-498D-9FEF-C4C65752EB06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -61,5 +70,9 @@ Global
 		{7522EC34-B400-4FD4-84DF-9ACB37EB5DDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7522EC34-B400-4FD4-84DF-9ACB37EB5DDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7522EC34-B400-4FD4-84DF-9ACB37EB5DDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93541D30-C604-449A-B958-85F7F8072DFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93541D30-C604-449A-B958-85F7F8072DFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93541D30-C604-449A-B958-85F7F8072DFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93541D30-C604-449A-B958-85F7F8072DFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

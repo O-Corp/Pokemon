@@ -31,3 +31,19 @@ Translating Pokemon Descriptions
     Examples:
       | Name    | ExpectedDescription                       | ExpectedHabitat | ExpectedLegendary |
       | pikachu | Give every man thy ear, but few thy voice | common          | false             |
+      
+    Scenario: Fallback to standard description as translation API is unavailable
+        Given the pokemon <Name> exists
+        And its habitat is <ExpectedHabitat>
+        And its legendary status is <ExpectedLegendary>
+        And the translation API is unavailable
+        When the POST request is sent
+        Then an OK response is returned
+        And the Shakespeare translation API is called
+        And the POST response is
+          | Name   | Description Standard  | Habitat           | Is Legendary        |
+          | <Name> | <ExpectedDescription> | <ExpectedHabitat> | <ExpectedLegendary> |
+
+    Examples:
+      | Name    | ExpectedDescription            | ExpectedHabitat | ExpectedLegendary |
+      | pikachu | It was created by a scientist. | common          | false             |
