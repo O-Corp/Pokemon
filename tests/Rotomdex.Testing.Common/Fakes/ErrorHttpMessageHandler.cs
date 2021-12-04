@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Rotomdex.Testing.Common.Fakes
 {
-    public class ErrorHttpHandler : HttpMessageHandler
+    public class ErrorHttpMessageHandler : HttpMessageHandler
     {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {

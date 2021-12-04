@@ -14,9 +14,14 @@
             IsLegendary = isLegendary;
         }
         
+        public void UpdateDescription(string description)
+        {
+            Description = description;
+        }
+        
         public string Name { get; }
         
-        public string Description { get; set; }
+        public string Description { get; private set; }
         
         public string Habitat { get; }
         

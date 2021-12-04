@@ -8,7 +8,6 @@ using Rotomdex.Integration.Adapters;
 using Rotomdex.Integration.Factories;
 using Rotomdex.Integration.Services;
 using Rotomdex.Web.Api.Configuration;
-using Rotomdex.Web.Api.Controllers;
 using Rotomdex.Web.Api.Middleware;
 
 namespace Rotomdex.Web.Api
@@ -50,8 +49,9 @@ namespace Rotomdex.Web.Api
             services.AddSingleton<IPokemonApiAdapter>(new PokeApiAdapter(new HttpClient(), apiSettings.BaseAddress));
 
             var translatorApiSettings = serviceProvider.GetService<TranslatorApiSettings>();
-            services.AddSingleton<ITranslationsApiAdapter>(new YodaTranslatorAdapter(new HttpClient(), translatorApiSettings.BaseAddress));
-            services.AddSingleton<ITranslationsApiAdapter>(new ShakespeareTranslatorAdapter(new HttpClient(), translatorApiSettings.BaseAddress));
+            var httpClient = new HttpClient() { BaseAddress = translatorApiSettings.BaseAddress };
+            services.AddSingleton<ITranslationsApiAdapter>(new YodaTranslatorAdapter(httpClient));
+            services.AddSingleton<ITranslationsApiAdapter>(new ShakespeareTranslatorAdapter(httpClient));
         }
     }
 }

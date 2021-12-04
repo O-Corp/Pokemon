@@ -4,6 +4,11 @@ using Rotomdex.Integration.Adapters;
 
 namespace Rotomdex.Integration.Factories
 {
+    public interface ITranslatorFactory
+    {
+        ITranslationsApiAdapter Create(TranslationType translationType);
+    }
+    
     public class TranslatorFactory : ITranslatorFactory
     {
         private readonly IEnumerable<ITranslationsApiAdapter> _translationsApiAdapters;

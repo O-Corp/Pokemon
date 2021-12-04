@@ -1,11 +1,10 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 
 namespace Rotomdex.Integration.Adapters
 {
     public class YodaTranslatorAdapter : FunTranslationApiAdapter
     {
-        public YodaTranslatorAdapter(HttpClient httpClient, Uri baseAddress) : base(httpClient, baseAddress)
+        public YodaTranslatorAdapter(HttpClient httpClient) : base(httpClient)
         {
         }
 

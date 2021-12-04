@@ -10,18 +10,26 @@ namespace Rotomdex.Integration.Adapters
     {
         private readonly HttpClient _httpClient;
 
-        public FunTranslationApiAdapter(HttpClient httpClient, Uri baseAddress)
+        protected FunTranslationApiAdapter(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = baseAddress;
         }
         
         public async Task<TranslationResponse> Translate(string text)
         {
-            var request = new FunTranslationRequest { Text = text };
-            var response = await _httpClient.PostAsJsonAsync($"translate/{TranslationVersion.ToLower()}", request);
-            var translationResponse = await response.Content.ReadFromJsonAsync<TranslationResponse>();
-            return translationResponse;
+            try
+            {
+                var request = new FunTranslationRequest { Text = text };
+                var response = await _httpClient.PostAsJsonAsync($"translate/{TranslationVersion.ToLower()}", request);
+                var translationResponse = await response.Content.ReadFromJsonAsync<TranslationResponse>();
+                return translationResponse;
+            }
+            catch (Exception)
+            {
+                // TODO: log and track
+            }
+
+            return null;
         }
         
         protected abstract string TranslationVersion { get; }

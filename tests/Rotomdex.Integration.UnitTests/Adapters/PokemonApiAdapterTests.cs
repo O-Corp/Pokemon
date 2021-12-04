@@ -70,7 +70,7 @@ namespace Rotomdex.Integration.UnitTests.Adapters
         [Test]
         public void When_A_Transient_Error_Occurs_Then_Correct_Exception_Is_Thrown()
         {
-            _subject = new PokeApiAdapter(new HttpClient(new ErrorHttpHandler()), new Uri("http://foo.com/"));
+            _subject = new PokeApiAdapter(new HttpClient(new ErrorHttpMessageHandler()), new Uri("http://foo.com/"));
             Assert.ThrowsAsync<ThirdPartyUnavailableException>(async () => await _subject.GetPokemon(new PokeRequest { Name = "dragonite" }));
         }
     }

@@ -32,7 +32,7 @@ namespace Rotomdex.Testing.Common.Fakes
 
         public void SetupResponse(string route, HttpStatusCode httpStatusCode)
         {
-            _responses.Add(route, new TestExpectation(null, httpStatusCode));
+            _responses.Add(route, new TestExpectation(string.Empty, httpStatusCode));
         }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -40,11 +40,17 @@ namespace Rotomdex.Testing.Common.Fakes
             HttpRequests.Add(request);
             
             var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+
+            if (request.RequestUri is null)
+            {
+                return Task.FromResult(httpResponseMessage);
+            }
+            
             if (!_responses.TryGetValue(request.RequestUri.PathAndQuery, out var expectation))
             {
                 return Task.FromResult(httpResponseMessage);
             }
-
+                
             if (!string.IsNullOrWhiteSpace(expectation.Json))
             {
                 httpResponseMessage.Content = new StringContent(expectation.Json);    

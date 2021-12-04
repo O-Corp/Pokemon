@@ -135,12 +135,12 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Attemping to retrieve information about a non-existent pokemon")]
-        public virtual void AttempingToRetrieveInformationAboutANon_ExistentPokemon()
+        [NUnit.Framework.DescriptionAttribute("Attemping to retrieve information about a Pokemon that does not exist")]
+        public virtual void AttempingToRetrieveInformationAboutAPokemonThatDoesNotExist()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Attemping to retrieve information about a non-existent pokemon", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Attemping to retrieve information about a Pokemon that does not exist", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 19
     this.ScenarioInitialize(scenarioInfo);
 #line hidden

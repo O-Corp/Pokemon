@@ -1,13 +1,15 @@
 ﻿using System;
-using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using Rotomdex.Domain.DTOs;
+using Rotomdex.Domain.Models;
 using Rotomdex.Integration.Adapters;
-using Rotomdex.Web.Api.ComponentTests.Fakes;
+using Rotomdex.Integration.Contracts.PokeApi;
+using Rotomdex.Testing.Common.Fakes;
+using Rotomdex.Testing.Common.Helpers;
 using Rotomdex.Web.Api.Models;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -18,63 +20,59 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
     [Scope(Feature = "Translation")]
     public class TranslationSteps
     {
+        private readonly Uri _baseAddress = new("https://funtranslations.com/");
         private DataContainer _dataContainer;
         private HttpResponseMessage _httpResponse;
-        private PokeApiResponseBuilder _pokeApiResponseBuilder;
-        private FakeTranslationHttpMessageHandler _yodaHttpMessageHandler;
-        private FakeTranslationHttpMessageHandler _shakespeareHttpMessageHandler;
+        private PokeApiResponse _pokeApiResponse;
         private Mock<IPokemonApiAdapter> _pokemonApiAdapter;
-        private Uri _baseAddress;
+        private HttpClientBuilder _httpClientBuilder;
 
         [Before]
         public void Setup()
         {
-            _baseAddress = new Uri("http://foo.com");
-            _pokeApiResponseBuilder = new PokeApiResponseBuilder().WithValidResponse();
+            _httpClientBuilder = new HttpClientBuilder(_baseAddress);
             _pokemonApiAdapter = new Mock<IPokemonApiAdapter>();
-            _yodaHttpMessageHandler = new FakeTranslationHttpMessageHandler(File.ReadAllText(@"Data\yoda_translation_response.json"));
-            _shakespeareHttpMessageHandler = new FakeTranslationHttpMessageHandler(File.ReadAllText(@"Data\shakespeare_translation_response.json"));
             _dataContainer = new DataContainer
             {
                 ApiAdapter = _pokemonApiAdapter.Object,
-                YodaTranslationsAdapter = new YodaTranslatorAdapter(new HttpClient(_yodaHttpMessageHandler), _baseAddress),
-                ShakespeareTranslationsAdapter = new ShakespeareTranslatorAdapter(new HttpClient(_shakespeareHttpMessageHandler), _baseAddress)
+                YodaTranslationsAdapter = new YodaTranslatorAdapter(_httpClientBuilder.WithYodaTranslation().Build()),
+                ShakespeareTranslationsAdapter = new ShakespeareTranslatorAdapter(_httpClientBuilder.WithShakespeareTranslation().Build())
             };
         }
 
-        [Given(@"the pokemon (.*) exists")]
-        public void GivenThePokemonExists(string name)
+        [Given("the pokemon exists")]
+        public void GivenThePokemonExists(Table table)
         {
-            _pokeApiResponseBuilder.WithName(name);
+            var pokemon = table.CreateInstance<Pokemon>();
+            _pokeApiResponse = new PokeApiResponseBuilder()
+                .WithValidResponse()
+                .WithName(pokemon.Name)
+                .WithHabitat(pokemon.Habitat)
+                .WithLegendary(pokemon.IsLegendary)
+                .WithDescription(pokemon.Description)
+                .Build();
         }
 
-        [Given(@"its habitat is (.*)")]
-        public void GivenItsHabitatIs(string habitat)
+        [Given(@"the translation API is unavailable")]
+        public void GivenTheTranslationApiIsUnavailable()
         {
-            _pokeApiResponseBuilder.WithHabitat(habitat);
+            var httpClient = _httpClientBuilder.WithUnavailableApi().Build();
+            _dataContainer.ShakespeareTranslationsAdapter = new ShakespeareTranslatorAdapter(httpClient);
+            _dataContainer.YodaTranslationsAdapter = new YodaTranslatorAdapter(httpClient);
         }
-
-        [Given(@"its legendary status is (.*)")]
-        public void GivenTheLegendaryStatusIs(bool isLegendary)
-        {
-            _pokeApiResponseBuilder.WithLegendary(isLegendary);
-        }
-
+        
         [When(@"the POST request is sent")]
         public async Task WhenThePostRequestIsSent()
         {
-            var pokeApiResponse = _pokeApiResponseBuilder.Build();
             _pokemonApiAdapter
-                .Setup(x => x.GetPokemon(It.Is<PokeRequest>(y => y.Name == pokeApiResponse.Name)))
-                .ReturnsAsync(pokeApiResponse);
+                .Setup(x => x.GetPokemon(It.Is<PokeRequest>(y => y.Name == _pokeApiResponse.Name)))
+                .ReturnsAsync(_pokeApiResponse);
 
-            using (var client = TestHelper.CreateHttpClient(_dataContainer))
-            {
-                var payload = new TranslationRequest { Name = pokeApiResponse.Name };
-                _httpResponse = await client.PostAsJsonAsync($"http://localhost/rotomdex/v1/pokemon/translate", payload);
-            }
+            using var client = TestHelper.CreateHttpClient(_dataContainer);
+            var payload = new TranslationRequest { Name = _pokeApiResponse.Name };
+            _httpResponse = await client.PostAsJsonAsync($"http://localhost/rotomdex/v1/pokemon/translate", payload);
         }
-
+        
         [Then(@"an (.*) response is returned")]
         public void ThenAnResponseIsReturned(HttpStatusCode httpStatusCode)
         {
@@ -93,16 +91,44 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
             Assert.That(result.IsLegendary, Is.EqualTo(expected.IsLegendary));
         }
 
-        [Then(@"the Yoda translation API is called")]
-        public void ThenTheYodaTranslationApiIsCalled()
+        [Then(@"the (.*) translation API is called")]
+        public void ThenTheTranslationApiIsCalled(string translation)
         {
-            Assert.That(_yodaHttpMessageHandler.HttpRequest.RequestUri.ToString(), Is.EqualTo($"{_baseAddress}translate/yoda"));
+            switch (translation.ToLower())
+            {
+                case "yoda":
+                    ThenTheYodaTranslationApiIsCalled();
+                    break;
+                case "shakespeare":
+                    ThenTheShakespeareTranslationApiIsCalled();
+                    break;
+                default:
+                    Assert.Fail("No matching translation, please ensure it is supported.");
+                    break;
+            }
         }
-
-        [Then(@"the Shakespeare translation API is called")]
-        public void ThenTheShakespeareTranslationApiIsCalled()
+        
+        private void ThenTheYodaTranslationApiIsCalled()
         {
-            Assert.That(_shakespeareHttpMessageHandler.HttpRequest.RequestUri.ToString(), Is.EqualTo($"{_baseAddress}translate/shakespeare"));
+            var httpRequestMessage = FakeYodaTranslationHttpMessageHandler.ExecutedRequest;
+            if (httpRequestMessage?.RequestUri != null)
+            {
+                Assert.That(httpRequestMessage.RequestUri.ToString(), Is.EqualTo($"{_baseAddress}translate/yoda"));
+                return;
+            }
+            
+            Assert.Fail("Yoda API Translation was not called.");
         }
+        
+        private void ThenTheShakespeareTranslationApiIsCalled()
+        {
+            var httpRequestMessage = FakeShakespeareTranslationHttpMessageHandler.ExecutedRequest;
+            if (httpRequestMessage?.RequestUri != null)
+            {
+                Assert.That(httpRequestMessage.RequestUri.ToString(), Is.EqualTo($"{_baseAddress}translate/shakespeare"));
+                return;
+            }
+            
+            Assert.Fail("Shakespeare API Translation was not called.");        }
     }
 }

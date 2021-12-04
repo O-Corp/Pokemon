@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Rotomdex.Integration.Contracts.PokeApi;
 
 namespace Rotomdex.Web.Api.ComponentTests
@@ -57,6 +58,13 @@ namespace Rotomdex.Web.Api.ComponentTests
         public PokeApiResponseBuilder WithLegendary(bool value)
         {
             _response.SpeciesDetails.IsLegendary = value;
+            return this;
+        }
+
+        public PokeApiResponseBuilder WithDescription(string description)
+        {
+            const int englishDescription = 0;
+            _response.SpeciesDetails.FlavorTextEntries[englishDescription].FlavourText = description;
             return this;
         }
 

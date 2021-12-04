@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Rotomdex.Domain.DTOs;
+using Rotomdex.Domain.Services;
 using Rotomdex.Integration.Services;
 using Rotomdex.Web.Api.Models;
 

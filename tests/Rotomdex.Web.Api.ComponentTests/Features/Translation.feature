@@ -2,48 +2,34 @@
 Translating Pokemon Descriptions
 
     Scenario: Translate Pokemon to Yoda description
-        Given the pokemon <Name> exists
-        And its habitat is <ExpectedHabitat>
-        And its legendary status is <ExpectedLegendary>
+        Given the pokemon exists
+          | Name   | Habitat   | Is Legendary | Description   |
+          | <Name> | <Habitat> | <Legendary>  | <Description> |
         When the POST request is sent
         Then an OK response is returned
-        And the Yoda translation API is called
+        And the <Translation> translation API is called
         And the POST response is
-          | Name   | Description Standard  | Habitat           | Is Legendary        |
-          | <Name> | <ExpectedDescription> | <ExpectedHabitat> | <ExpectedLegendary> |
+          | Name   | Description Standard     | Habitat   | Is Legendary |
+          | <Name> | <Translated Description> | <Habitat> | <Legendary>  |
 
     Examples:
-      | Name      | ExpectedDescription               | ExpectedHabitat | ExpectedLegendary |
-      | mewtwo    | Fear is the path to the dark side | cave            | true              |
-      | dragonite | Fear is the path to the dark side | rare            | true              |
+      | Name      | Description            | Translated Description                     | Habitat | Legendary | Translation |
+      | Mewtwo    | Created by scientists. | Fear is the path to the dark side.         | cave    | true      | Yoda        |
+      | Dragonite | Favourite Dragon type. | Fear is the path to the dark side.         | rare    | true      | Yoda        |
+      | Pikachu   | Pika Pika!             | Give every man thy ear, but few thy voice. | common  | false     | Shakespeare |
 
-    Scenario: Translate Pokemon to Shakespeare description
-        Given the pokemon <Name> exists
-        And its habitat is <ExpectedHabitat>
-        And its legendary status is <ExpectedLegendary>
-        When the POST request is sent
-        Then an OK response is returned
-        And the Shakespeare translation API is called
-        And the POST response is
-          | Name   | Description Standard  | Habitat           | Is Legendary        |
-          | <Name> | <ExpectedDescription> | <ExpectedHabitat> | <ExpectedLegendary> |
-
-    Examples:
-      | Name    | ExpectedDescription                       | ExpectedHabitat | ExpectedLegendary |
-      | pikachu | Give every man thy ear, but few thy voice | common          | false             |
-      
     Scenario: Fallback to standard description as translation API is unavailable
-        Given the pokemon <Name> exists
-        And its habitat is <ExpectedHabitat>
-        And its legendary status is <ExpectedLegendary>
-        And the translation API is unavailable
+        Given the translation API is unavailable
+        And the pokemon exists
+          | Name   | Habitat   | Is Legendary | Description   |
+          | <Name> | <Habitat> | <Legendary>  | <Description> |
         When the POST request is sent
         Then an OK response is returned
-        And the Shakespeare translation API is called
         And the POST response is
-          | Name   | Description Standard  | Habitat           | Is Legendary        |
-          | <Name> | <ExpectedDescription> | <ExpectedHabitat> | <ExpectedLegendary> |
+          | Name   | Description Standard | Habitat   | Is Legendary |
+          | <Name> | <Description>        | <Habitat> | <Legendary>  |
 
     Examples:
-      | Name    | ExpectedDescription            | ExpectedHabitat | ExpectedLegendary |
-      | pikachu | It was created by a scientist. | common          | false             |
+      | Name   | Habitat    | Legendary | Description                                                            |
+      | Zekrom |            | true      | Concealing itself in lightning clouds, flying through the Unova region |
+      | Entei  | Grasslands | true      | Volcanoes erupt when it barks.                                         |
