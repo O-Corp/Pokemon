@@ -75,9 +75,9 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Translate Pokemon to Yoda description")]
-        [NUnit.Framework.TestCaseAttribute("Mewtwo", "Created by scientists.", "Fear is the path to the dark side.", "cave", "true", "Yoda", null)]
-        [NUnit.Framework.TestCaseAttribute("Dragonite", "Favourite Dragon type.", "Fear is the path to the dark side.", "rare", "true", "Yoda", null)]
-        [NUnit.Framework.TestCaseAttribute("Pikachu", "Pika Pika!", "Give every man thy ear, but few thy voice.", "common", "false", "Shakespeare", null)]
+        [NUnit.Framework.TestCaseAttribute("Mewtwo", "Created by scientists.", "Fear is the path to the dark side.", "Cave", "true", "Yoda", null)]
+        [NUnit.Framework.TestCaseAttribute("Dragonite", "Favourite Dragon type.", "Fear is the path to the dark side.", "Rare", "true", "Yoda", null)]
+        [NUnit.Framework.TestCaseAttribute("Pikachu", "Pika Pika!", "Give every man thy ear, but few thy voice.", "Common", "false", "Shakespeare", null)]
         public virtual void TranslatePokemonToYodaDescription(string name, string description, string translatedDescription, string habitat, string legendary, string translation, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;

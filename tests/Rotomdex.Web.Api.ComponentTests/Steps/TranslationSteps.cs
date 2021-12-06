@@ -43,7 +43,12 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         [Given("the pokemon exists")]
         public void GivenThePokemonExists(Table table)
         {
-            var pokemon = table.CreateInstance<Pokemon>();
+            var pokemon = Pokemon.Create(
+                table.Rows[0]["Name"],
+                table.Rows[0]["Description"],
+                table.Rows[0]["Habitat"],
+                bool.Parse(table.Rows[0]["Is Legendary"]));
+            
             _pokeApiResponse = new PokeApiResponseBuilder()
                 .WithValidResponse()
                 .WithName(pokemon.Name)

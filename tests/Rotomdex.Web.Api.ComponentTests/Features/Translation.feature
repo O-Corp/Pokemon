@@ -14,9 +14,9 @@ Translating Pokemon Descriptions
 
     Examples:
       | Name      | Description            | Translated Description                     | Habitat | Legendary | Translation |
-      | Mewtwo    | Created by scientists. | Fear is the path to the dark side.         | cave    | true      | Yoda        |
-      | Dragonite | Favourite Dragon type. | Fear is the path to the dark side.         | rare    | true      | Yoda        |
-      | Pikachu   | Pika Pika!             | Give every man thy ear, but few thy voice. | common  | false     | Shakespeare |
+      | Mewtwo    | Created by scientists. | Fear is the path to the dark side.         | Cave    | true      | Yoda        |
+      | Dragonite | Favourite Dragon type. | Fear is the path to the dark side.         | Rare    | true      | Yoda        |
+      | Pikachu   | Pika Pika!             | Give every man thy ear, but few thy voice. | Common  | false     | Shakespeare |
 
     Scenario: Fallback to standard description as translation API is unavailable
         Given the translation API is unavailable

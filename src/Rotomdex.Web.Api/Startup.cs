@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Rotomdex.Domain.Services;
 using Rotomdex.Integration.Adapters;
+using Rotomdex.Integration.Decorators;
 using Rotomdex.Integration.Factories;
 using Rotomdex.Integration.Services;
 using Rotomdex.Web.Api.Configuration;
@@ -25,8 +26,11 @@ namespace Rotomdex.Web.Api
             ConfigureDependencies(services);
 
             services.AddSingleton<IPokemonService, PokemonService>();
-            services.AddSingleton<ITranslationService, TranslationService>();
             services.AddSingleton<ITranslatorFactory, TranslatorFactory>();
+            services.AddSingleton<ITranslationService, TranslationService>();
+            services.AddScoped<ITranslationDecorator, ShakespeareTranslationDecorator>();
+            services.Decorate<ITranslationDecorator, YodaTranslationDecorator>();
+            services.Decorate<ITranslationDecorator, DefaultTranslationDecorator>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -49,7 +53,7 @@ namespace Rotomdex.Web.Api
             services.AddSingleton<IPokemonApiAdapter>(new PokeApiAdapter(new HttpClient(), apiSettings.BaseAddress));
 
             var translatorApiSettings = serviceProvider.GetService<TranslatorApiSettings>();
-            var httpClient = new HttpClient() { BaseAddress = translatorApiSettings.BaseAddress };
+            var httpClient = new HttpClient { BaseAddress = translatorApiSettings.BaseAddress };
             services.AddSingleton<ITranslationsApiAdapter>(new YodaTranslatorAdapter(httpClient));
             services.AddSingleton<ITranslationsApiAdapter>(new ShakespeareTranslatorAdapter(httpClient));
         }

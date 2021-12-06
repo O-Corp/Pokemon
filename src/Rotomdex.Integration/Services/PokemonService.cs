@@ -24,8 +24,7 @@ namespace Rotomdex.Integration.Services
 
             if (apiResponse != null)
             {
-                // TODO: use automapper here?
-                return new Pokemon(
+                return Pokemon.Create(
                     apiResponse.Name,
                     GetDescriptionOrDefault(request, apiResponse),
                     apiResponse.SpeciesDetails.Habitat.Name,

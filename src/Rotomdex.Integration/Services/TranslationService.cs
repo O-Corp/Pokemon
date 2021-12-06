@@ -1,53 +1,30 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Rotomdex.Domain.DTOs;
 using Rotomdex.Domain.Models;
 using Rotomdex.Domain.Services;
-using Rotomdex.Integration.Adapters;
-using Rotomdex.Integration.Factories;
+using Rotomdex.Integration.Decorators;
 
 namespace Rotomdex.Integration.Services
 {
     public class TranslationService : ITranslationService
     {
         private readonly IPokemonService _pokemonService;
-        private readonly ITranslatorFactory _translatorFactory;
+        private readonly ITranslationDecorator _translationDecorator;
 
-        public TranslationService(IPokemonService pokemonService, ITranslatorFactory translatorFactory)
+        public TranslationService(
+            IPokemonService pokemonService,
+            ITranslationDecorator translationDecorator)
         {
             _pokemonService = pokemonService;
-            _translatorFactory = translatorFactory;
+            _translationDecorator = translationDecorator;
         }
 
         public async Task<Pokemon> Translate(PokeRequest request)
         {
             var pokemon = await _pokemonService.GetPokemon(request);
-            pokemon.UpdateDescription(await GetTranslation(pokemon));
+            pokemon.UpdateDescription((await _translationDecorator.Translate(pokemon)).ToString());
 
             return pokemon;
-        }
-
-        private async Task<string> GetTranslation(Pokemon pokemon)
-        {
-            var translatorAdapter = GetTranslationsApiAdapter(pokemon);
-            var translationResponse = await translatorAdapter.Translate(pokemon.Description);
-            
-            return translationResponse != null 
-                ? translationResponse.Contents.Translated 
-                : pokemon.Description;
-        }
-
-        private ITranslationsApiAdapter GetTranslationsApiAdapter(Pokemon pokemon)
-        {
-            var translatorAdapter = _translatorFactory.Create(UseYodaTranslation(pokemon)
-                ? TranslationType.Yoda
-                : TranslationType.Shakespeare);
-            return translatorAdapter;
-        }
-
-        private static bool UseYodaTranslation(Pokemon pokemon)
-        {
-            return pokemon.Habitat.Equals("rare", StringComparison.CurrentCultureIgnoreCase) || pokemon.IsLegendary;
         }
     }
 }

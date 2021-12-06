@@ -8,7 +8,7 @@ Return basic standard information about a Pokemon
         And a request is made to the Pokemon API
         And the response is
           | Name   | Description Standard | Habitat | Is Legendary |
-          | mewtwo | <Description>        | rare    | true         |
+          | Mewtwo | <Description>        | Rare    | true         |
 
     Examples:
       | Language | Description                        |
