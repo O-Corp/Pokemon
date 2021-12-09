@@ -10,6 +10,7 @@ namespace Rotomdex.Web.Api.Models
         [FromQuery(Name = "lang")]
         public string Language { get; set; }
         
+        [FromQuery(Name = "version")]
         public string Version { get; set; }
     }
 }

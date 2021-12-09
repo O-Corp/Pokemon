@@ -1,4 +1,4 @@
-﻿namespace Rotomdex.Integration.Contracts.FunTranslate.Contracts
+﻿namespace Rotomdex.Integration.Contracts.FunTranslate
 {
     public class FunTranslationRequest
     {

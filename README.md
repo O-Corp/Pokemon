@@ -15,6 +15,16 @@ This is my implementation of the Pokemon API and includes the following:
 
 <br />
 
+## Local Docker
+You can run this locally as a docker container. To do this simply:
+- Navigate to the directory where the docker file is located
+- Powershell (in admin mode) to the directory
+- Run the command `docker build -t pokemon:latest`
+- Once it has built run `docker run -p 80:80 pokemon:latest`
+- In your PowerShell window run `curl http://localhost:80/rotomdex/v1/pokemon/mewtwo`
+
+<br />
+
 ## How to Launch the API
 Once you have pulled the source, launch your choice of IDE (this was developed using JetBrains Rider). Build the solution or directly hit F5 which should launch the API locally.
 

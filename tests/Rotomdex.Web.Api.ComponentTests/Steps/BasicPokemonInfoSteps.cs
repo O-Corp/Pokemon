@@ -2,11 +2,11 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Moq;
 using NUnit.Framework;
 using Rotomdex.Domain.DTOs;
-using Rotomdex.Domain.Exceptions;
 using Rotomdex.Integration.Adapters;
+using Rotomdex.Integration.Contracts.PokeApi;
+using Rotomdex.Testing.Common.Fakes;
 using Rotomdex.Web.Api.Models;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -19,17 +19,22 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
     {
         private HttpResponseMessage _httpResponse;
         private DataContainer _dataContainer;
-        private Mock<IPokemonApiAdapter> _pokemonApiAdapter;
-        private PokeApiResponseBuilder _pokeApiResponseBuilder;
+        private FakePokeApiHttpHandler _fakePokeApiHttpHandler;
+        private Uri _baseAddress;
+        private PokemonApiResponse _pokeApiResponse;
 
         [Before]
         public void Setup()
         {
-            _pokeApiResponseBuilder = new PokeApiResponseBuilder();
-            _pokemonApiAdapter = new Mock<IPokemonApiAdapter>();
-            _dataContainer = new DataContainer
+            _fakePokeApiHttpHandler = new FakePokeApiHttpHandler();
+            _baseAddress = new Uri("https://stub.com/");
+            _dataContainer = new DataContainer()
             {
-                ApiAdapter = _pokemonApiAdapter.Object
+                ApiAdapter = new PokeApiAdapter(
+                    new HttpClient(_fakePokeApiHttpHandler)
+                    {
+                        BaseAddress = _baseAddress
+                    })
             };
         }
 
@@ -37,26 +42,27 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         public void GivenThatThePokemonExists(string pokemon)
         {
             var pokeRequest = new PokeRequest { Name = pokemon };
-            _pokeApiResponseBuilder = new PokeApiResponseBuilder()
+            var pokeApiResponseBuilder = new PokeApiResponseBuilder()
                 .WithValidResponse()
                 .WithName(pokemon);
-            _pokemonApiAdapter
-                 .Setup(x => x.GetPokemon(It.Is<PokeRequest>(y => y.Name == pokeRequest.Name)))
-                 .ReturnsAsync(_pokeApiResponseBuilder.Build());
+            _pokeApiResponse = pokeApiResponseBuilder.Build();
+            
+            _fakePokeApiHttpHandler.SetupPokemonResponse(pokeRequest, _pokeApiResponse);
+            _fakePokeApiHttpHandler.SetupSpeciesResponse(_pokeApiResponse);
         }
         
         [Given(@"the pokemon (.*) does not exist")]
         public void GivenThePokemonDoesNotExist(string pokemon)
         {
-            _pokeApiResponseBuilder.WithInvalidPokemon();
+            _fakePokeApiHttpHandler.SetupPokemonResponse(new PokeRequest { Name = pokemon }, null);
         }
 
         [Given(@"the third party is unavailable")]
         public void GivenTheThirdPartyIsUnavailable()
         {
-            _pokemonApiAdapter
-                .Setup(x => x.GetPokemon(It.IsAny<PokeRequest>()))
-                .Throws(new ThirdPartyUnavailableException("test", new Exception()));
+            _dataContainer.ApiAdapter = new PokeApiAdapter(
+                new HttpClient(
+                    new ErrorHttpMessageHandler()));
         }
 
         [When(@"the request is sent to get information about (.*)")]
@@ -71,10 +77,8 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         [When(@"a request is made to get information about (.*) in language of (.*)")]
         public async Task WhenARequestIsMadeToGetInformationAboutInLanguageOf(string pokemon, string language)
         {
-            using (var client = TestHelper.CreateHttpClient(_dataContainer))
-            {
-                _httpResponse = await client.GetAsync($"http://localhost/rotomdex/v1/pokemon/{pokemon}?lang={language}");
-            }
+            using var client = TestHelper.CreateHttpClient(_dataContainer);
+            _httpResponse = await client.GetAsync($"http://localhost/rotomdex/v1/pokemon/{pokemon}?lang={language}");
         }
 
         [Then(@"an (.*) response is returned")]
@@ -86,7 +90,11 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         [Then(@"a request is made to the Pokemon API")]
         public void ThenARequestIsMadeToThePokemonApi()
         {
-            _pokemonApiAdapter.Verify(x => x.GetPokemon(It.IsAny<PokeRequest>()), Times.Once);
+            var pokeInfoExpectedUri = $"{_baseAddress}api/v2/pokemon/{_pokeApiResponse.Name}";
+            var pokeSpeciesExpectedUri = $"{_baseAddress}api/v2/pokemon-species/{_pokeApiResponse.Id}";
+            
+            Assert.That(_fakePokeApiHttpHandler.HttpRequests[0].RequestUri.ToString(), Is.EqualTo(pokeInfoExpectedUri));
+            Assert.That(_fakePokeApiHttpHandler.HttpRequests[1].RequestUri.ToString(), Is.EqualTo(pokeSpeciesExpectedUri));
         }
 
         [Then(@"the response is")]

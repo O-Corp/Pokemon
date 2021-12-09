@@ -9,6 +9,6 @@ namespace Rotomdex.Integration.Adapters
         {
         }
 
-        protected override string TranslationVersion => "shakespeare";
+        protected override string TranslationType => "shakespeare";
     }
 }

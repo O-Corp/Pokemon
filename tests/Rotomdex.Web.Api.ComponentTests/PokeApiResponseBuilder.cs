@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Rotomdex.Integration.Contracts.PokeApi;
 
 namespace Rotomdex.Web.Api.ComponentTests
 {
-    public class PokeApiResponseBuilder
+    internal class PokeApiResponseBuilder
     {
         private const string EnglishDescription = "It was created by a scientist.";
         private const string FrenchDescription = "Il a été créé par un scientifique.";
         private const string EnglishLanguageCode = "en";
         private const string FrenchLanguageCode = "fr";
-        private PokeApiResponse _response;
+        private PokemonApiResponse _response;
 
         public PokeApiResponseBuilder WithValidResponse()
         {
-            _response = new PokeApiResponse
+            _response = new PokemonApiResponse
             {
                 Id = 123,
                 Name = "mewtwo",
@@ -74,7 +73,7 @@ namespace Rotomdex.Web.Api.ComponentTests
             return this;
         }
 
-        public PokeApiResponse Build()
+        public PokemonApiResponse Build()
         {
             return _response;
         }

@@ -33,6 +33,14 @@ namespace Rotomdex.Testing.Common.Helpers
             return this;
         }
 
+        public HttpClientBuilder WithPokeApi()
+        {
+            var fakePokeApiHttpHandler = new FakePokeApiHttpHandler();
+            //fakePokeApiHttpHandler.SetupResponse()
+            _handler = fakePokeApiHttpHandler;
+            return this;
+        }
+        
         public HttpClient Build()
         {
             return new HttpClient(_handler)

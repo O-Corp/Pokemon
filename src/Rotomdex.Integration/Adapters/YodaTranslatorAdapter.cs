@@ -8,6 +8,6 @@ namespace Rotomdex.Integration.Adapters
         {
         }
 
-        protected override string TranslationVersion => "yoda";
+        protected override string TranslationType => "yoda";
     }
 }

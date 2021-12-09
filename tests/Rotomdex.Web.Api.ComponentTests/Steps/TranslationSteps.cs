@@ -23,7 +23,7 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         private readonly Uri _baseAddress = new("https://funtranslations.com/");
         private DataContainer _dataContainer;
         private HttpResponseMessage _httpResponse;
-        private PokeApiResponse _pokeApiResponse;
+        private PokemonApiResponse _pokeApiResponse;
         private Mock<IPokemonApiAdapter> _pokemonApiAdapter;
         private HttpClientBuilder _httpClientBuilder;
 
@@ -73,6 +73,10 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
                 .Setup(x => x.GetPokemon(It.Is<PokeRequest>(y => y.Name == _pokeApiResponse.Name)))
                 .ReturnsAsync(_pokeApiResponse);
 
+            _pokemonApiAdapter
+                .Setup(x => x.GetSpeciesDetails(It.Is<PokeRequest>(y => y.Id == _pokeApiResponse.Id.ToString())))
+                .ReturnsAsync(_pokeApiResponse.SpeciesDetails);
+            
             using var client = TestHelper.CreateHttpClient(_dataContainer);
             var payload = new TranslationRequest { Name = _pokeApiResponse.Name };
             _httpResponse = await client.PostAsJsonAsync($"http://localhost/rotomdex/v1/pokemon/translate", payload);

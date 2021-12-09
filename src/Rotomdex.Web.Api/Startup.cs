@@ -28,9 +28,13 @@ namespace Rotomdex.Web.Api
             services.AddSingleton<IPokemonService, PokemonService>();
             services.AddSingleton<ITranslatorFactory, TranslatorFactory>();
             services.AddSingleton<ITranslationService, TranslationService>();
+            
             services.AddScoped<ITranslationDecorator, ShakespeareTranslationDecorator>();
             services.Decorate<ITranslationDecorator, YodaTranslationDecorator>();
             services.Decorate<ITranslationDecorator, DefaultTranslationDecorator>();
+
+            services.AddScoped<IPokemonDecorator, DetailedInfoDecorator>();
+            services.Decorate<IPokemonDecorator, PokemonInfoDecorator>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -50,7 +54,7 @@ namespace Rotomdex.Web.Api
             var serviceProvider = services.BuildServiceProvider();
             
             var apiSettings = serviceProvider.GetService<PokeApiSettings>();
-            services.AddSingleton<IPokemonApiAdapter>(new PokeApiAdapter(new HttpClient(), apiSettings.BaseAddress));
+            services.AddSingleton<IPokemonApiAdapter>(new PokeApiAdapter(new HttpClient { BaseAddress = apiSettings.BaseAddress }));
 
             var translatorApiSettings = serviceProvider.GetService<TranslatorApiSettings>();
             var httpClient = new HttpClient { BaseAddress = translatorApiSettings.BaseAddress };

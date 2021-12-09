@@ -1,53 +1,36 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Rotomdex.Domain.DTOs;
 using Rotomdex.Domain.Models;
 using Rotomdex.Domain.Services;
-using Rotomdex.Integration.Adapters;
-using Rotomdex.Integration.Contracts.PokeApi;
+using Rotomdex.Integration.Decorators;
 
 namespace Rotomdex.Integration.Services
 {
     public class PokemonService : IPokemonService
     {
-        private readonly IPokemonApiAdapter _pokemonApiAdapter;
+        private readonly IPokemonDecorator _pokemonDecorator;
 
-        public PokemonService(IPokemonApiAdapter pokemonApiAdapter)
+        public PokemonService(IPokemonDecorator pokemonDecorator)
         {
-            _pokemonApiAdapter = pokemonApiAdapter;
+            _pokemonDecorator = pokemonDecorator;
         }
         
         public async Task<Pokemon> GetPokemon(PokeRequest request)
         {
-            var apiResponse = await _pokemonApiAdapter.GetPokemon(request);
+            var builder = await _pokemonDecorator.Decorate(request);
+            var apiResponse = builder.Build();
 
             if (apiResponse != null)
             {
                 return Pokemon.Create(
                     apiResponse.Name,
-                    GetDescriptionOrDefault(request, apiResponse),
+                    apiResponse.SpeciesDetails.FlavorTextEntries.First().FlavourText,
                     apiResponse.SpeciesDetails.Habitat.Name,
                     apiResponse.SpeciesDetails.IsLegendary);                
             }
 
             return null;
-        }
-
-        private static string GetDescriptionOrDefault(PokeRequest request, PokeApiResponse apiResponse)
-        {
-            var language = request.Language;
-            var descriptions = apiResponse.SpeciesDetails.FlavorTextEntries;
-            var regionalDescription = descriptions.FirstOrDefault(x => x.Language.Name.Equals(language, StringComparison.CurrentCultureIgnoreCase));
-
-            if (regionalDescription != null)
-            {
-                return regionalDescription.FlavourText;
-            }
-
-            const string defaultLanguage = "en";
-            regionalDescription = descriptions.FirstOrDefault(x => x.Language.Name.Equals(defaultLanguage, StringComparison.CurrentCultureIgnoreCase));
-            return regionalDescription.FlavourText;
         }
     }
 }

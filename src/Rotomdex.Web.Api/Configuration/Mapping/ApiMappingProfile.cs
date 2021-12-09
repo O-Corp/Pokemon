@@ -8,8 +8,10 @@ namespace Rotomdex.Web.Api.Configuration.Mapping
     {
         public ApiMappingProfile()
         {
-            CreateMap<PokemonRequestFilter, PokeRequest>();
+            CreateMap<PokemonRequestFilter, PokeRequest>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
             CreateMap<TranslationRequest, PokeRequest>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.Language, opt => opt.Ignore())
                 .ForMember(dest => dest.Version, opt => opt.Ignore());
         }

@@ -25,7 +25,8 @@ namespace Rotomdex.Web.Api.Controllers
         [Route("{name}")]
         public async Task<IActionResult> Get([FromRoute] PokemonRequestFilter request)
         {
-            var pokemon = await _pokemonService.GetPokemon(_mapper.Map<PokeRequest>(request));
+            var pokeRequest = _mapper.Map<PokeRequest>(request);
+            var pokemon = await _pokemonService.GetPokemon(pokeRequest);
             if (pokemon == null)
             {
                 return new NotFoundResult();

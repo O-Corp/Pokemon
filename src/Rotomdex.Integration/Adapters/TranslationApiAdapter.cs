@@ -2,10 +2,15 @@
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Rotomdex.Integration.Contracts.FunTranslate.Contracts;
+using Rotomdex.Integration.Contracts.FunTranslate;
 
 namespace Rotomdex.Integration.Adapters
 {
+    public interface ITranslationsApiAdapter
+    {
+        Task<TranslationResponse> Translate(string text);
+    }
+    
     public abstract class FunTranslationApiAdapter : ITranslationsApiAdapter
     {
         private readonly HttpClient _httpClient;
@@ -20,7 +25,7 @@ namespace Rotomdex.Integration.Adapters
             try
             {
                 var request = new FunTranslationRequest { Text = text };
-                var response = await _httpClient.PostAsJsonAsync($"translate/{TranslationVersion.ToLower()}", request);
+                var response = await _httpClient.PostAsJsonAsync($"translate/{TranslationType.ToLower()}", request);
                 var translationResponse = await response.Content.ReadFromJsonAsync<TranslationResponse>();
                 return translationResponse;
             }
@@ -32,6 +37,6 @@ namespace Rotomdex.Integration.Adapters
             return null;
         }
         
-        protected abstract string TranslationVersion { get; }
+        protected abstract string TranslationType { get; }
     }
 }

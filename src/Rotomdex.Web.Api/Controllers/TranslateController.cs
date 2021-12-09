@@ -3,7 +3,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Rotomdex.Domain.DTOs;
 using Rotomdex.Domain.Services;
-using Rotomdex.Integration.Services;
 using Rotomdex.Web.Api.Models;
 
 namespace Rotomdex.Web.Api.Controllers
@@ -26,8 +25,8 @@ namespace Rotomdex.Web.Api.Controllers
         [Route("translate")]
         public async Task<IActionResult> Post([FromBody] TranslationRequest request)
         {
-            var response = await _translationService.Translate(_mapper.Map<PokeRequest>(request));
-            return new OkObjectResult(_mapper.Map<PokemonResponse>(response));
+            var pokemon = await _translationService.Translate(_mapper.Map<PokeRequest>(request));
+            return new OkObjectResult(_mapper.Map<PokemonResponse>(pokemon));
         }
     }
 }
