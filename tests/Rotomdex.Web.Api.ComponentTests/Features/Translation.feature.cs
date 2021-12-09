@@ -149,65 +149,6 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Invalid payload return a bad request")]
-        public virtual void InvalidPayloadReturnABadRequest()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid payload return a bad request", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 21
-    this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Name",
-                            "Habitat",
-                            "Is Legendary",
-                            "Description"});
-                table4.AddRow(new string[] {
-                            "Dragonite",
-                            "rare",
-                            "true",
-                            "Dragon type Pokemon."});
-#line 22
-        testRunner.Given("the pokemon exists", ((string)(null)), table4, "Given ");
-#line hidden
-#line 25
-        testRunner.When("an invalid POST request is sent", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 26
-        testRunner.Then("an BadRequest response is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-                TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Error Code",
-                            "Error Message"});
-                table5.AddRow(new string[] {
-                            "InvalidText",
-                            "Text must not be empty."});
-#line 27
-        testRunner.And("the validation error is", ((string)(null)), table5, "And ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Fallback to standard description as translation API is unavailable")]
         [NUnit.Framework.TestCaseAttribute("Zekrom", "", "true", "Concealing itself in lightning clouds, flying through the Unova region", null)]
         [NUnit.Framework.TestCaseAttribute("Entei", "Grasslands", "true", "Volcanoes erupt when it barks.", null)]
@@ -243,18 +184,18 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
 #line 32
         testRunner.Given("the translation API is unavailable", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-                TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                             "Name",
                             "Habitat",
                             "Is Legendary",
                             "Description"});
-                table6.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             string.Format("{0}", name),
                             string.Format("{0}", habitat),
                             string.Format("{0}", legendary),
                             string.Format("{0}", description)});
 #line 33
-        testRunner.And("the pokemon exists", ((string)(null)), table6, "And ");
+        testRunner.And("the pokemon exists", ((string)(null)), table4, "And ");
 #line hidden
 #line 36
         testRunner.When("the POST request is sent", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -262,18 +203,18 @@ namespace Rotomdex.Web.Api.ComponentTests.Features
 #line 37
         testRunner.Then("an OK response is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                             "Name",
                             "Description Standard",
                             "Habitat",
                             "Is Legendary"});
-                table7.AddRow(new string[] {
+                table5.AddRow(new string[] {
                             string.Format("{0}", name),
                             string.Format("{0}", description),
                             string.Format("{0}", habitat),
                             string.Format("{0}", legendary)});
 #line 38
-        testRunner.And("the POST response is", ((string)(null)), table7, "And ");
+        testRunner.And("the POST response is", ((string)(null)), table5, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

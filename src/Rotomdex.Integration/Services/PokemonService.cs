@@ -24,7 +24,7 @@ namespace Rotomdex.Integration.Services
             if (apiResponse != null)
             {
                 return Pokemon.Create(
-                    apiResponse.Name,
+                    apiResponse.PokeInfoResponse.Name,
                     apiResponse.SpeciesDetails.FlavorTextEntries.First().FlavourText,
                     apiResponse.SpeciesDetails.Habitat.Name,
                     apiResponse.SpeciesDetails.IsLegendary);                

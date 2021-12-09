@@ -27,13 +27,24 @@ namespace Rotomdex.IntegrationTests.Adapters
             var result = await _subject.GetPokemon( new PokeRequest { Name = name });
             
             Assert.That(result.Name, Is.EqualTo("mewtwo"));
-            Assert.That(result.SpeciesDetails.FlavorTextEntries, Is.Not.Empty);
-            Assert.That(result.SpeciesDetails.Habitat.Name, Is.EqualTo("rare"));
-            Assert.That(result.SpeciesDetails.IsLegendary, Is.True);
+            Assert.That(result.Id, Is.GreaterThan(0));
+            Assert.That(result.Species.Url, Is.Not.Null);
+        }
+        
+        [TestCase("MEWTWO")]
+        [TestCase("meWtwO")]
+        public async Task When_Retrieving_Species_Details_Then_Correct_Response_Is_Returned(string name)
+        {
+            const string mewtwoId = "150";
+            var result = await _subject.GetSpeciesDetails(new PokeRequest { Id = mewtwoId });
+            
+            Assert.That(result.FlavorTextEntries, Is.Not.Empty);
+            Assert.That(result.Habitat.Name, Is.EqualTo("rare"));
+            Assert.That(result.IsLegendary, Is.True);
         }
         
         [Test]
-        public async Task When_Retrieving_Pokemon_Details_For_Non_Existent_Pokemon_Then_Return_Null()
+        public async Task When_Attempting_To_Get_Details_For_Non_Existent_Pokemon_Then_Return_Null()
         {
             var result = await _subject.GetSpeciesDetails(new PokeRequest { Name = "xxx" });
             Assert.That(result, Is.Null);

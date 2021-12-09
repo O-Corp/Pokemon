@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using Rotomdex.Domain.DTOs;
-using Rotomdex.Domain.Models;
 using Rotomdex.Integration.Adapters;
 using Rotomdex.Integration.Contracts.PokeApi;
 using Rotomdex.Testing.Common.Fakes;
@@ -23,7 +22,8 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         private readonly Uri _baseAddress = new("https://funtranslations.com/");
         private DataContainer _dataContainer;
         private HttpResponseMessage _httpResponse;
-        private PokemonApiResponse _pokeApiResponse;
+        private PokeInfoResponse _pokeInfoResponse;
+        private SpeciesDetails _speciesDetails;
         private Mock<IPokemonApiAdapter> _pokemonApiAdapter;
         private HttpClientBuilder _httpClientBuilder;
 
@@ -43,19 +43,20 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         [Given("the pokemon exists")]
         public void GivenThePokemonExists(Table table)
         {
-            var pokemon = Pokemon.Create(
-                table.Rows[0]["Name"],
-                table.Rows[0]["Description"],
-                table.Rows[0]["Habitat"],
-                bool.Parse(table.Rows[0]["Is Legendary"]));
-            
-            _pokeApiResponse = new PokeApiResponseBuilder()
+            var name = table.Rows[0]["Name"];
+            var description = table.Rows[0]["Description"];
+            var habitat = table.Rows[0]["Habitat"];
+            var isLegendary = bool.Parse(table.Rows[0]["Is Legendary"]);
+            var pokeApiResponse = new PokeApiResponseBuilder()
                 .WithValidResponse()
-                .WithName(pokemon.Name)
-                .WithHabitat(pokemon.Habitat)
-                .WithLegendary(pokemon.IsLegendary)
-                .WithDescription(pokemon.Description)
+                .WithName(name)
+                .WithHabitat(habitat)
+                .WithLegendary(isLegendary)
+                .WithDescription(description)
                 .Build();
+
+            _pokeInfoResponse = pokeApiResponse.PokeInfoResponse;
+            _speciesDetails = pokeApiResponse.SpeciesDetails;
         }
 
         [Given(@"the translation API is unavailable")]
@@ -70,15 +71,15 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         public async Task WhenThePostRequestIsSent()
         {
             _pokemonApiAdapter
-                .Setup(x => x.GetPokemon(It.Is<PokeRequest>(y => y.Name == _pokeApiResponse.Name)))
-                .ReturnsAsync(_pokeApiResponse);
+                .Setup(x => x.GetPokemon(It.Is<PokeRequest>(y => y.Name == _pokeInfoResponse.Name)))
+                .ReturnsAsync(_pokeInfoResponse);
 
             _pokemonApiAdapter
-                .Setup(x => x.GetSpeciesDetails(It.Is<PokeRequest>(y => y.Id == _pokeApiResponse.Id.ToString())))
-                .ReturnsAsync(_pokeApiResponse.SpeciesDetails);
+                .Setup(x => x.GetSpeciesDetails(It.Is<PokeRequest>(y => y.Id == _pokeInfoResponse.Id.ToString())))
+                .ReturnsAsync(_speciesDetails);
             
             using var client = TestHelper.CreateHttpClient(_dataContainer);
-            var payload = new TranslationRequest { Name = _pokeApiResponse.Name };
+            var payload = new TranslationRequest { Name = _pokeInfoResponse.Name };
             _httpResponse = await client.PostAsJsonAsync($"http://localhost/rotomdex/v1/pokemon/translate", payload);
         }
         

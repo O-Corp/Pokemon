@@ -22,8 +22,8 @@ namespace Rotomdex.Testing.Common.Fakes
 
         public void SetupPokemonResponse(PokeRequest request, PokemonApiResponse response)
         {
-            var json = JsonConvert.SerializeObject(response);
-            _responses.Add($"/api/v2/pokemon/{request.Name}", new TestExpectation(json, HttpStatusCode.OK));
+            var json = JsonConvert.SerializeObject(response.PokeInfoResponse);
+            _responses.Add($"/api/v2/pokemon/{request.Name.ToLower()}", new TestExpectation(json, HttpStatusCode.OK));
         }
         
         public void SetupSpeciesResponse(PokemonApiResponse response)
@@ -37,7 +37,7 @@ namespace Rotomdex.Testing.Common.Fakes
                 Formatting = Formatting.Indented
             };
             var json = JsonConvert.SerializeObject(response.SpeciesDetails, serializerSettings);
-            _responses.Add($"/api/v2/pokemon-species/{response.Id}", new TestExpectation(json, HttpStatusCode.OK));
+            _responses.Add($"/api/v2/pokemon-species/{response.PokeInfoResponse.Id}", new TestExpectation(json, HttpStatusCode.OK));
         }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

@@ -15,7 +15,7 @@ namespace Rotomdex.Integration.Adapters
 {
     public interface IPokemonApiAdapter
     {
-        Task<PokemonApiResponse> GetPokemon(PokeRequest request);
+        Task<PokeInfoResponse> GetPokemon(PokeRequest request);
 
         Task<SpeciesDetails> GetSpeciesDetails(PokeRequest request);
     }
@@ -29,9 +29,9 @@ namespace Rotomdex.Integration.Adapters
             _httpClient = httpClient;
         }
 
-        public async Task<PokemonApiResponse> GetPokemon(PokeRequest request)
+        public async Task<PokeInfoResponse> GetPokemon(PokeRequest request)
         {
-            return await Execute<PokemonApiResponse>($"api/v2/pokemon/{request.Name}");
+            return await Execute<PokeInfoResponse>($"api/v2/pokemon/{request.Name}");
         }
 
         public async Task<SpeciesDetails> GetSpeciesDetails(PokeRequest request)

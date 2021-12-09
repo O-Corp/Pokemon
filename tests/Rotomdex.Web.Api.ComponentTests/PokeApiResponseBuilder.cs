@@ -16,9 +16,12 @@ namespace Rotomdex.Web.Api.ComponentTests
         {
             _response = new PokemonApiResponse
             {
-                Id = 123,
-                Name = "mewtwo",
-                Species = new Species { Url = new Uri("http://foo.com/species/123") },
+                PokeInfoResponse = new PokeInfoResponse
+                {
+                    Id = 123,
+                    Name = "mewtwo",
+                    Species = new Species { Url = new Uri("http://foo.com/species/123") }
+                },
                 SpeciesDetails = new SpeciesDetails
                 {
                     Habitat = new Habitat { Name = "rare" },
@@ -44,7 +47,7 @@ namespace Rotomdex.Web.Api.ComponentTests
 
         public PokeApiResponseBuilder WithName(string value)
         {
-            _response.Name = value;
+            _response.PokeInfoResponse.Name = value;
             return this;
         }
 

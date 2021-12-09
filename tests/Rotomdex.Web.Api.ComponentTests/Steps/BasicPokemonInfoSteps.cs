@@ -90,8 +90,8 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         [Then(@"a request is made to the Pokemon API")]
         public void ThenARequestIsMadeToThePokemonApi()
         {
-            var pokeInfoExpectedUri = $"{_baseAddress}api/v2/pokemon/{_pokeApiResponse.Name}";
-            var pokeSpeciesExpectedUri = $"{_baseAddress}api/v2/pokemon-species/{_pokeApiResponse.Id}";
+            var pokeInfoExpectedUri = $"{_baseAddress}api/v2/pokemon/{_pokeApiResponse.PokeInfoResponse.Name}";
+            var pokeSpeciesExpectedUri = $"{_baseAddress}api/v2/pokemon-species/{_pokeApiResponse.PokeInfoResponse.Id}";
             
             Assert.That(_fakePokeApiHttpHandler.HttpRequests[0].RequestUri.ToString(), Is.EqualTo(pokeInfoExpectedUri));
             Assert.That(_fakePokeApiHttpHandler.HttpRequests[1].RequestUri.ToString(), Is.EqualTo(pokeSpeciesExpectedUri));

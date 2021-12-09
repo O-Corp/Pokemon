@@ -42,9 +42,12 @@ namespace Rotomdex.Integration.Builders
             
             return new PokemonApiResponse
             {
-                Id = _id,
-                Name = _name,
-                Species = _species,
+                PokeInfoResponse = new PokeInfoResponse
+                {
+                    Id = _id,
+                    Name = _name,
+                    Species = _species,
+                },
                 SpeciesDetails = _speciesDetails
             };
         }
