@@ -42,10 +42,10 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         public void GivenThatThePokemonExists(string pokemon)
         {
             var pokeRequest = new PokeRequest { Name = pokemon };
-            var pokeApiResponseBuilder = new PokeApiResponseBuilder()
+            _pokeApiResponse = new PokeApiResponseBuilder()
                 .WithValidResponse()
-                .WithName(pokemon);
-            _pokeApiResponse = pokeApiResponseBuilder.Build();
+                .WithName(pokemon)
+                .Build();
             
             _fakePokeApiHttpHandler.SetupPokemonResponse(pokeRequest, _pokeApiResponse);
             _fakePokeApiHttpHandler.SetupSpeciesResponse(_pokeApiResponse);
@@ -68,10 +68,8 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         [When(@"the request is sent to get information about (.*)")]
         public async Task WhenTheRequestIsSentToGetInformationAbout(string pokemon)
         {
-            using (var client = TestHelper.CreateHttpClient(_dataContainer))
-            {
-                _httpResponse = await client.GetAsync($"http://localhost/rotomdex/v1/pokemon/{pokemon}");
-            }
+            using var client = TestHelper.CreateHttpClient(_dataContainer);
+            _httpResponse = await client.GetAsync($"http://localhost/rotomdex/v1/pokemon/{pokemon}");
         }
 
         [When(@"a request is made to get information about (.*) in language of (.*)")]

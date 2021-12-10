@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Rotomdex.Domain.Services;
 using Rotomdex.Integration.Adapters;
 using Rotomdex.Integration.Decorators;
@@ -19,6 +20,12 @@ namespace Rotomdex.Web.Api
         {
             services
                 .AddAutoMapper(typeof(Startup))
+                .AddLogging(opt =>
+                {
+                    opt.AddConsole();
+                    opt.AddDebug();
+                    opt.SetMinimumLevel(LogLevel.Trace);
+                })
                 .AddControllers()
                 .AddApplicationPart(typeof(Startup).Assembly)
                 .AddControllersAsServices();
