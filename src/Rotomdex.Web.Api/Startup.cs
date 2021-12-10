@@ -26,6 +26,7 @@ namespace Rotomdex.Web.Api
                     opt.AddDebug();
                     opt.SetMinimumLevel(LogLevel.Trace);
                 })
+                .AddSwaggerGen()
                 .AddControllers()
                 .AddApplicationPart(typeof(Startup).Assembly)
                 .AddControllersAsServices();
