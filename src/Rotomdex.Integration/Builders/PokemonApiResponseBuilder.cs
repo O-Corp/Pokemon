@@ -1,4 +1,5 @@
-﻿using Rotomdex.Integration.Contracts.PokeApi;
+﻿using System.Collections.Generic;
+using Rotomdex.Integration.Contracts.PokeApi;
 
 namespace Rotomdex.Integration.Builders
 {
@@ -6,49 +7,49 @@ namespace Rotomdex.Integration.Builders
     {
         private int _id;
         private string _name;
-        private SpeciesDetails _speciesDetails;
-        private Species _species;
+        private string _habitat;
+        private bool _isLegendary;
+        private List<Description> _descriptions;
 
-        public PokemonApiResponseBuilder WithId(int id)
+        public PokemonApiResponseBuilder WithId(int value)
         {
-            _id = id;
+            _id = value;
             return this;
         }
 
-        public PokemonApiResponseBuilder WithName(string name)
+        public PokemonApiResponseBuilder WithName(string value)
         {
-            _name = name;
-            return this;
-        }
-        
-        public PokemonApiResponseBuilder WithSpecies(Species value)
-        {
-            _species = value;
+            _name = value;
             return this;
         }
 
-        public PokemonApiResponseBuilder WithSpeciesDetails(SpeciesDetails value)
+        public PokemonApiResponseBuilder WithHabitat(string value)
         {
-            _speciesDetails = value;
+            _habitat = value;
+            return this;
+        }
+
+        public PokemonApiResponseBuilder WithIsLegendary(bool value)
+        {
+            _isLegendary = value;
+            return this;
+        }
+
+        public PokemonApiResponseBuilder WithDescriptions(List<Description> value)
+        {
+            _descriptions = value;
             return this;
         }
 
         public PokemonApiResponse Build()
         {
-            if (string.IsNullOrWhiteSpace(_name))
-            {
-                return null;
-            }
-            
             return new PokemonApiResponse
             {
-                PokeInfoResponse = new PokeInfoResponse
-                {
-                    Id = _id,
-                    Name = _name,
-                    Species = _species,
-                },
-                SpeciesDetails = _speciesDetails
+                Id = _id,
+                Name = _name,
+                Habitat = _habitat,
+                IsLegendary = _isLegendary,
+                Descriptions = _descriptions
             };
         }
     }

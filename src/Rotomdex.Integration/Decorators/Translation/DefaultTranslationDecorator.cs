@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Rotomdex.Domain.Models;
 
-namespace Rotomdex.Integration.Decorators
+namespace Rotomdex.Integration.Decorators.Translation
 {
     public class DefaultTranslationDecorator : ITranslationDecorator
     {
@@ -12,16 +12,16 @@ namespace Rotomdex.Integration.Decorators
             _decorator = decorator;
         }
 
-        public async Task<Translation> Translate(Pokemon pokemon)
+        public async Task<Domain.Models.Translation> Translate(Pokemon pokemon)
         {
             return await GetTranslationOrUseDefaultDescription(pokemon);
         }
 
-        private async Task<Translation> GetTranslationOrUseDefaultDescription(Pokemon pokemon)
+        private async Task<Domain.Models.Translation> GetTranslationOrUseDefaultDescription(Pokemon pokemon)
         {
             var defaultDescription = pokemon.Description;
             var translation = await _decorator.Translate(pokemon);
-            return translation ?? new Translation(defaultDescription);
+            return translation ?? new Domain.Models.Translation(defaultDescription);
         }
     }
 }

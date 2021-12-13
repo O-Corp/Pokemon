@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using Rotomdex.Domain.Services;
 using Rotomdex.Integration.Adapters;
 using Rotomdex.Integration.Decorators;
+using Rotomdex.Integration.Decorators.PokeInfo;
+using Rotomdex.Integration.Decorators.Translation;
 using Rotomdex.Integration.Factories;
 using Rotomdex.Integration.Services;
 using Rotomdex.Web.Api.Configuration;

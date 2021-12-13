@@ -23,8 +23,7 @@ namespace Rotomdex.Integration.Factories
             return translationType switch
             {
                 TranslationType.Yoda => _translationsApiAdapters.FirstOrDefault(x => x is YodaTranslatorAdapter),
-                TranslationType.Shakespeare => _translationsApiAdapters.FirstOrDefault(x => x is ShakespeareTranslatorAdapter),
-                _ => null // throw exception
+                TranslationType.Shakespeare => _translationsApiAdapters.FirstOrDefault(x => x is ShakespeareTranslatorAdapter)
             };
         }
     }

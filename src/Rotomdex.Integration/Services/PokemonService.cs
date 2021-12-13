@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Rotomdex.Domain.DTOs;
 using Rotomdex.Domain.Models;
 using Rotomdex.Domain.Services;
-using Rotomdex.Integration.Decorators;
+using Rotomdex.Integration.Decorators.PokeInfo;
 
 namespace Rotomdex.Integration.Services
 {
@@ -21,13 +21,13 @@ namespace Rotomdex.Integration.Services
             var builder = await _pokemonDecorator.Decorate(request);
             var apiResponse = builder.Build();
 
-            if (apiResponse != null)
+            if (!string.IsNullOrWhiteSpace(apiResponse.Name))
             {
                 return Pokemon.Create(
-                    apiResponse.PokeInfoResponse.Name,
-                    apiResponse.SpeciesDetails.FlavorTextEntries.First().FlavourText,
-                    apiResponse.SpeciesDetails.Habitat.Name,
-                    apiResponse.SpeciesDetails.IsLegendary);                
+                    apiResponse.Name,
+                    apiResponse.Descriptions.First().FlavourText,
+                    apiResponse.Habitat,
+                    apiResponse.IsLegendary);                
             }
 
             return null;

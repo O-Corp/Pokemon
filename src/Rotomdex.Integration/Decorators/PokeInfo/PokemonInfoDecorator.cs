@@ -3,7 +3,7 @@ using Rotomdex.Domain.DTOs;
 using Rotomdex.Integration.Adapters;
 using Rotomdex.Integration.Builders;
 
-namespace Rotomdex.Integration.Decorators
+namespace Rotomdex.Integration.Decorators.PokeInfo
 {
     public class PokemonInfoDecorator : IPokemonDecorator
     {
@@ -21,16 +21,15 @@ namespace Rotomdex.Integration.Decorators
         public async Task<PokemonApiResponseBuilder> Decorate(PokeRequest request)
         {
             var builder = new PokemonApiResponseBuilder();
-            var pokeApiResponse = await _pokemonApiAdapter.GetPokemon(request);
+            var pokeInfoResponse = await _pokemonApiAdapter.GetPokemon(request);
 
-            if (pokeApiResponse != null)
+            if (pokeInfoResponse != null)
             {
-                request.Id = pokeApiResponse.Id.ToString();
+                request.Id = pokeInfoResponse.Id.ToString();
                 builder = await _pokemonDecorator.Decorate(request);
                 builder
-                    .WithId(pokeApiResponse.Id)
-                    .WithName(pokeApiResponse.Name)
-                    .WithSpecies(pokeApiResponse.Species);
+                    .WithId(pokeInfoResponse.Id)
+                    .WithName(pokeInfoResponse.Name);
             }
 
             return builder;

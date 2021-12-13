@@ -7,7 +7,7 @@ using Rotomdex.Integration.Adapters;
 using Rotomdex.Integration.Builders;
 using Rotomdex.Integration.Contracts.PokeApi;
 
-namespace Rotomdex.Integration.Decorators
+namespace Rotomdex.Integration.Decorators.PokeInfo
 {
     public class DetailedInfoDecorator : IPokemonDecorator
     {
@@ -22,11 +22,12 @@ namespace Rotomdex.Integration.Decorators
         {
             var builder = new PokemonApiResponseBuilder();
             var speciesDetails = await _pokemonApiAdapter.GetSpeciesDetails(request);
-            speciesDetails.FlavorTextEntries = new List<Description>
-            {
-                GetDescriptionOrDefault(request, speciesDetails)
-            };
-            builder.WithSpeciesDetails(speciesDetails);
+            speciesDetails.FlavorTextEntries = new List<Description> { GetDescriptionOrDefault(request, speciesDetails) };
+            builder
+                .WithHabitat(speciesDetails.Habitat.Name)
+                .WithIsLegendary(speciesDetails.IsLegendary)
+                .WithDescriptions(speciesDetails.FlavorTextEntries);
+            
             return builder;
         }
 

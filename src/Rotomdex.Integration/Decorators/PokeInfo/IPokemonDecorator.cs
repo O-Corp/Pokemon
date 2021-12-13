@@ -2,7 +2,7 @@
 using Rotomdex.Domain.DTOs;
 using Rotomdex.Integration.Builders;
 
-namespace Rotomdex.Integration.Decorators
+namespace Rotomdex.Integration.Decorators.PokeInfo
 {
     public interface IPokemonDecorator
     {

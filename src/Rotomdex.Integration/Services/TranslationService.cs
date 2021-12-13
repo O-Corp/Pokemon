@@ -3,6 +3,7 @@ using Rotomdex.Domain.DTOs;
 using Rotomdex.Domain.Models;
 using Rotomdex.Domain.Services;
 using Rotomdex.Integration.Decorators;
+using Rotomdex.Integration.Decorators.Translation;
 
 namespace Rotomdex.Integration.Services
 {

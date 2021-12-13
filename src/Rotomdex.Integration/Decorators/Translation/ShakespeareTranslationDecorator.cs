@@ -2,7 +2,7 @@
 using Rotomdex.Domain.Models;
 using Rotomdex.Integration.Factories;
 
-namespace Rotomdex.Integration.Decorators
+namespace Rotomdex.Integration.Decorators.Translation
 {
     public class ShakespeareTranslationDecorator : ITranslationDecorator
     {
@@ -13,13 +13,13 @@ namespace Rotomdex.Integration.Decorators
             _factory = factory;
         }
         
-        public async Task<Translation> Translate(Pokemon pokemon)
+        public async Task<Domain.Models.Translation> Translate(Pokemon pokemon)
         {
             var translationsApi = _factory.Create(TranslationType.Shakespeare);
             var response = await translationsApi.Translate(pokemon.Description);
             return response == null 
                 ? null 
-                : new Translation(response.Contents.Translated);
+                : new Domain.Models.Translation(response.Contents.Translated);
         }
     }
 }

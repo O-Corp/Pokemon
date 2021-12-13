@@ -47,16 +47,18 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
             var description = table.Rows[0]["Description"];
             var habitat = table.Rows[0]["Habitat"];
             var isLegendary = bool.Parse(table.Rows[0]["Is Legendary"]);
-            var pokeApiResponse = new PokeApiResponseBuilder()
-                .WithValidResponse()
+
+            _pokeInfoResponse = new PokeInfoResponseBuilder()
+                .WithValidPokeInfoResponse()
                 .WithName(name)
+                .Build();
+            
+            _speciesDetails = new PokeSpeciesDetailsResponseBuilder()
+                .WithValidResponse()
                 .WithHabitat(habitat)
                 .WithLegendary(isLegendary)
                 .WithDescription(description)
                 .Build();
-
-            _pokeInfoResponse = pokeApiResponse.PokeInfoResponse;
-            _speciesDetails = pokeApiResponse.SpeciesDetails;
         }
 
         [Given(@"the translation API is unavailable")]

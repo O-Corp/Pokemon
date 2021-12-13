@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using Rotomdex.Domain.DTOs;
 using Rotomdex.Integration.Adapters;
-using Rotomdex.Integration.Contracts.PokeApi;
 using Rotomdex.Testing.Common.Fakes;
+using Rotomdex.Testing.Common.Helpers;
 using Rotomdex.Web.Api.Models;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -20,15 +20,15 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         private HttpResponseMessage _httpResponse;
         private DataContainer _dataContainer;
         private FakePokeApiHttpHandler _fakePokeApiHttpHandler;
+        private PokeRequest _pokeRequest;
         private Uri _baseAddress;
-        private PokemonApiResponse _pokeApiResponse;
 
         [Before]
         public void Setup()
         {
             _fakePokeApiHttpHandler = new FakePokeApiHttpHandler();
             _baseAddress = new Uri("https://stub.com/");
-            _dataContainer = new DataContainer()
+            _dataContainer = new DataContainer
             {
                 ApiAdapter = new PokeApiAdapter(
                     new HttpClient(_fakePokeApiHttpHandler)
@@ -41,14 +41,18 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         [Given("that the pokemon (.*) exists")]
         public void GivenThatThePokemonExists(string pokemon)
         {
-            var pokeRequest = new PokeRequest { Name = pokemon };
-            _pokeApiResponse = new PokeApiResponseBuilder()
-                .WithValidResponse()
+            var pokeInfoResponse = new PokeInfoResponseBuilder()
+                .WithValidPokeInfoResponse()
                 .WithName(pokemon)
                 .Build();
+
+            var speciesDetails = new PokeSpeciesDetailsResponseBuilder()
+                .WithValidResponse()
+                .Build();
             
-            _fakePokeApiHttpHandler.SetupPokemonResponse(pokeRequest, _pokeApiResponse);
-            _fakePokeApiHttpHandler.SetupSpeciesResponse(_pokeApiResponse);
+            _pokeRequest = new PokeRequest { Id = "123", Name = pokemon };
+            _fakePokeApiHttpHandler.SetupPokemonResponse(_pokeRequest, pokeInfoResponse);
+            _fakePokeApiHttpHandler.SetupSpeciesResponse(_pokeRequest, speciesDetails);
         }
         
         [Given(@"the pokemon (.*) does not exist")]
@@ -88,8 +92,8 @@ namespace Rotomdex.Web.Api.ComponentTests.Steps
         [Then(@"a request is made to the Pokemon API")]
         public void ThenARequestIsMadeToThePokemonApi()
         {
-            var pokeInfoExpectedUri = $"{_baseAddress}api/v2/pokemon/{_pokeApiResponse.PokeInfoResponse.Name}";
-            var pokeSpeciesExpectedUri = $"{_baseAddress}api/v2/pokemon-species/{_pokeApiResponse.PokeInfoResponse.Id}";
+            var pokeInfoExpectedUri = $"{_baseAddress}api/v2/pokemon/{_pokeRequest.Name}";
+            var pokeSpeciesExpectedUri = $"{_baseAddress}api/v2/pokemon-species/{_pokeRequest.Id}";
             
             Assert.That(_fakePokeApiHttpHandler.HttpRequests[0].RequestUri.ToString(), Is.EqualTo(pokeInfoExpectedUri));
             Assert.That(_fakePokeApiHttpHandler.HttpRequests[1].RequestUri.ToString(), Is.EqualTo(pokeSpeciesExpectedUri));

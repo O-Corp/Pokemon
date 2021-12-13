@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Rotomdex.Domain.Models;
 using Rotomdex.Integration.Factories;
 
-namespace Rotomdex.Integration.Decorators
+namespace Rotomdex.Integration.Decorators.Translation
 {
     public class YodaTranslationDecorator : ITranslationDecorator
     {
@@ -18,7 +18,7 @@ namespace Rotomdex.Integration.Decorators
             _translatorFactory = translatorFactory;
         }
         
-        public async Task<Translation> Translate(Pokemon pokemon)
+        public async Task<Domain.Models.Translation> Translate(Pokemon pokemon)
         {
             if (UseYodaTranslation(pokemon))
             {
@@ -26,7 +26,7 @@ namespace Rotomdex.Integration.Decorators
                 var translationResponse = await translationsApi.Translate(pokemon.Description);
                 return translationResponse == null 
                     ? null
-                    : new Translation(translationResponse.Contents.Translated);
+                    : new Domain.Models.Translation(translationResponse.Contents.Translated);
             }
 
             return await _decorator.Translate(pokemon);

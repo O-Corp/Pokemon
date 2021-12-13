@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Rotomdex.Domain.Models;
 
-namespace Rotomdex.Integration.Decorators
+namespace Rotomdex.Integration.Decorators.Translation
 {
     public interface ITranslationDecorator
     {
-        Task<Translation> Translate(Pokemon pokemon);
+        Task<Domain.Models.Translation> Translate(Pokemon pokemon);
     }
 }
